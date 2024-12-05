@@ -1,0 +1,7 @@
+{
+    "java.server.launchMode": "Standard",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "backend/vendor/json.jar"
+    ]
+}
