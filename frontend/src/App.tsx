@@ -17,8 +17,8 @@ import { Grid } from "./components/Grid";
 import { PathfindingProvider } from "./context/PathfindingContext";
 import { TileProvider } from "./context/TileContext";
 import { animatePath } from "./utils/animatePath";
+import { Input } from "@/components/ui/input";
 
-// TODO: add search input
 const LOCATIONS = [
   { id: "KING", name: "Dr. Martin Luther King, Jr. Library" },
   { id: "HGH", name: "Hugh Gillis Hall" },
@@ -78,6 +78,7 @@ export default function App() {
   const [queue, setQueue] = useState<LocationWithUniqueId[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [path, setPath] = useState<any>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const isVisualizationRunningRef = useRef(false);
 
@@ -169,6 +170,12 @@ export default function App() {
       });
   };
 
+  const filteredLocations = LOCATIONS.filter(
+    (location) =>
+      location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      location.id.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
       <div className="container mx-auto p-4">
@@ -181,53 +188,62 @@ export default function App() {
             <div className="w-full lg:w-1/2">
               <h2 className="text-xl font-semibold mb-2">Buildings</h2>
               <p className="text-sm text-gray-600 mb-2">
-                Drag a building to the priority queue or click the plus to add
-                it.
+                Search for a building, drag a building, or click the plus to add
+                it to the priority queue.
               </p>
               <Droppable droppableId="locations">
                 {(provided) => (
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="flex flex-wrap content-start gap-4 p-4 border-2 border-dashed border-gray-200 rounded-lg h-[40vh] overflow-x-auto overflow-y-auto"
+                    className="flex flex-col gap-4 p-4 border-2 border-dashed border-gray-200 rounded-lg h-[40vh] overflow-x-auto overflow-y-auto"
                   >
-                    {LOCATIONS.map((location, index) => (
-                      <Draggable
-                        key={location.id}
-                        draggableId={location.id}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="flex items-center justify-between p-3 bg-white border rounded shadow group w-[calc(50%-0.5rem)]"
-                            style={{
-                              ...provided.draggableProps.style,
-                              opacity: snapshot.isDragging ? 0.5 : 1,
-                            }}
-                          >
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger className="flex items-center text-sm font-medium text-gray-700 truncate">
-                                  {location.name} ({location.id})
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  {location.name} ({location.id})
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                            <button
-                              onClick={() => addToQueue(location)}
-                              className="ml-2 shrink-0 text-blue-500 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    <Input
+                      type="text"
+                      placeholder="Search buildings..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="sticky top-0 z-10 bg-white"
+                    />
+                    <div className="flex flex-wrap content-start gap-4">
+                      {filteredLocations.map((location, index) => (
+                        <Draggable
+                          key={location.id}
+                          draggableId={location.id}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className="flex items-center justify-between p-3 bg-white border rounded shadow group w-[calc(50%-0.5rem)]"
+                              style={{
+                                ...provided.draggableProps.style,
+                                opacity: snapshot.isDragging ? 0.5 : 1,
+                              }}
                             >
-                              <PlusCircle className="h-6 w-6" />
-                            </button>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger className="flex items-center text-sm font-medium text-gray-700 truncate">
+                                    {location.name} ({location.id})
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    {location.name} ({location.id})
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                              <button
+                                onClick={() => addToQueue(location)}
+                                className="ml-2 shrink-0 text-blue-500 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                              >
+                                <PlusCircle className="h-6 w-6" />
+                              </button>
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                    </div>
                     {provided.placeholder}
                   </div>
                 )}
@@ -306,11 +322,8 @@ export default function App() {
 
       <PathfindingProvider>
         <TileProvider>
-          {
-            /*!isLoading && path && queue.length > 0 && */ <Grid
-              isVisualizationRunningRef={isVisualizationRunningRef}
-            />
-          }
+          {/*isLoading && path && queue.length > 0 &&*/}{" "}
+          <Grid isVisualizationRunningRef={isVisualizationRunningRef} />
         </TileProvider>
       </PathfindingProvider>
     </>
