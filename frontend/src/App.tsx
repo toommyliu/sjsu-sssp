@@ -271,10 +271,7 @@ export default function App() {
       </div>
 
       <PathfindingProvider>
-        <TileProvider>
-          {/*isLoading && path && queue.length > 0 &&*/}{" "}
-          <Grid isVisualizationRunningRef={isVisualizationRunningRef} />
-        </TileProvider>
+        <Grid isVisualizationRunningRef={isVisualizationRunningRef} />
       </PathfindingProvider>
     </>
   );
