@@ -46,10 +46,13 @@ export default function Tile({
     row === MAX_ROWS - 1 ? "border-b" : col === 0 ? "border-l" : "";
   const edgeStyle = row === MAX_ROWS - 1 && col === 0 ? "border-l" : "";
 
+  const handleClick = () => console.log({ row, col });
+
   return (
     <div
       className={cn(tileTyleStyle, borderStyle, edgeStyle)}
       id={`${row}-${col}`}
+      onClick={handleClick}
     />
   );
 }
