@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { usePathfinding } from "../hooks/usePathfinding";
+import { usePathfinding } from "@/providers/pathfinding-provider";
 import { MAX_COLS, MAX_ROWS } from "../utils/constants";
 import { Tile } from "./Tile";
 
@@ -25,19 +25,21 @@ export function Grid() {
         <div key={rowIndex} className="flex">
           {row.map((tile, tileIndex) => {
             const { isEnd, isStart, isPath, isTraversed, isWall } = tile;
+
             return (
               <Tile
-                key={tileIndex}
                 row={tile.row}
                 col={tile.col}
-                isEnd={isEnd}
+                key={tileIndex}
                 isStart={isStart}
+                isEnd={isEnd}
                 isPath={isPath}
                 isTraversed={isTraversed}
                 isWall={isWall}
               />
             );
           })}
+
         </div>
       ))}
     </div>

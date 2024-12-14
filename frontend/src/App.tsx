@@ -14,8 +14,8 @@ import {
 import { GripVertical, PlusCircle, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { Grid } from "./components/Grid";
-import { PathfindingProvider } from "./context/PathfindingContext";
-import { TileProvider } from "./context/TileContext";
+import { PathfindingProvider } from "./providers/pathfinding-provider";
+import { TileProvider } from "./providers/TileContext";
 import { animatePath } from "./utils/animatePath";
 import { Input } from "@/components/ui/input";
 import {
