@@ -10,7 +10,7 @@ export function Grid() {
     <div
       className={cn(
         // Base classes
-        "flex items-center flex-col justify-center border-sky-300 mb-10",
+        "mb-10 flex flex-col items-center justify-center border-sky-300",
         // Control Grid height
         `lg:min-h-[${MAX_ROWS * 20}px] md:min-h-[${
           MAX_ROWS * 15
@@ -18,7 +18,7 @@ export function Grid() {
         // Controlling grid width
         `lg:w-[${MAX_COLS * 20}px] md:w-[${MAX_COLS * 15}px] xs:w-[${
           MAX_COLS * 10
-        }px] w-[${MAX_COLS * 8}px]`
+        }px] w-[${MAX_COLS * 8}px]`,
       )}
     >
       {grid.map((row, rowIndex) => (
@@ -39,7 +39,6 @@ export function Grid() {
               />
             );
           })}
-
         </div>
       ))}
     </div>

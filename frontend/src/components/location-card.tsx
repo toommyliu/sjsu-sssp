@@ -7,7 +7,7 @@ import {
 import type { Location } from "@/locations";
 import type {
   DraggableProvided,
-  DraggableStateSnapshot
+  DraggableStateSnapshot,
 } from "@hello-pangea/dnd";
 import { PlusCircle } from "lucide-react";
 
@@ -22,7 +22,7 @@ export default function LocationCard({
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-      className="flex items-center justify-between p-3 bg-white border rounded shadow group w-[calc(50%-0.5rem)]"
+      className="group flex w-[calc(50%-0.5rem)] items-center justify-between rounded border p-3 shadow"
       style={{
         ...provided.draggableProps.style,
         opacity: snapshot.isDragging ? 0.5 : 1,
@@ -30,7 +30,7 @@ export default function LocationCard({
     >
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger className="flex items-center text-sm font-medium text-gray-700 truncate">
+          <TooltipTrigger className="flex items-center truncate text-sm font-medium text-gray-700">
             {location.name} ({location.id})
           </TooltipTrigger>
           <TooltipContent>
@@ -51,7 +51,6 @@ export default function LocationCard({
 type LocationCardProps = {
   provided: DraggableProvided;
   snapshot: DraggableStateSnapshot;
-
   location: Location;
   addToQueue: (location: Location) => void;
 };

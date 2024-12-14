@@ -1,37 +1,28 @@
+import LocationCard from "@/components/location-card";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Input } from "@/components/ui/input";
 import {
   DragDropContext,
   Draggable,
   Droppable,
   type DropResult,
 } from "@hello-pangea/dnd";
-import { GripVertical, PlusCircle, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { GripVertical, X } from "lucide-react";
+import { useState } from "react";
 import { Grid } from "./components/Grid";
-import { PathfindingProvider } from "./providers/pathfinding-provider";
-import { TileProvider } from "./providers/TileContext";
-import { animatePath } from "./utils/animatePath";
-import { Input } from "@/components/ui/input";
 import {
   LOCATIONS,
   type Location,
   type LocationWithUniqueId,
 } from "./locations";
-import LocationCard from "@/components/location-card";
+import { PathfindingProvider } from "./providers/pathfinding-provider";
+import { animatePath } from "./utils/animatePath";
 
 export default function App() {
   const [queue, setQueue] = useState<LocationWithUniqueId[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [path, setPath] = useState<any>(null);
+  const [, setPath] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const isRunningRef = useRef(false);
 
   function addToQueue(location: Location) {
     setQueue([
@@ -95,12 +86,12 @@ export default function App() {
             for (const segment of data.segments) {
               if (Array.isArray(segment.path) && segment.path.length > 0) {
                 console.log(
-                  `animate path from ${segment.startTile} to ${segment.endTile}`
+                  `animate path from ${segment.startTile} to ${segment.endTile}`,
                 );
                 animatePath(
                   segment.path,
                   segment.startTilePosition,
-                  segment.endTilePosition
+                  segment.endTilePosition,
                 );
                 await new Promise((resolve) => setTimeout(resolve, 1000));
               }
@@ -109,7 +100,7 @@ export default function App() {
             console.log(
               "no (2)",
               Array.isArray(data.segments),
-              data.segments.length
+              data.segments.length,
             );
           }
         } else {
@@ -124,21 +115,21 @@ export default function App() {
   const filteredLocations = LOCATIONS.filter(
     (location) =>
       location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      location.id.toLowerCase().includes(searchQuery.toLowerCase())
+      location.id.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
     <>
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">
+        <h1 className="mb-4 text-2xl font-bold">
           SJSU Shortest Single Source Path (SSSP)
         </h1>
         <DragDropContext onDragEnd={onDragEnd}>
-          <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex flex-col gap-8 lg:flex-row">
             {/* Buildings */}
             <div className="w-full lg:w-1/2">
-              <h2 className="text-xl font-semibold mb-2">Buildings</h2>
-              <p className="text-sm text-gray-600 mb-2">
+              <h2 className="mb-2 text-xl font-semibold">Buildings</h2>
+              <p className="mb-2 text-sm text-gray-600">
                 Search for a building, drag a building, or click the plus to add
                 it to the priority queue.
               </p>
@@ -147,14 +138,14 @@ export default function App() {
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="flex flex-col gap-4 p-4 border-2 border-dashed border-gray-200 rounded-lg h-[40vh] overflow-x-auto overflow-y-auto"
+                    className="flex h-[40vh] flex-col gap-4 overflow-x-auto overflow-y-auto rounded-lg border-2 border-dashed border-gray-200 p-4"
                   >
                     <Input
                       type="text"
                       placeholder="Search for a building..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="sticky top-0 z-10 h-100"
+                      className="h-100 sticky top-0 z-10"
                     />
                     <div className="flex flex-wrap content-start gap-4">
                       {filteredLocations.map((location, index) => (
@@ -182,8 +173,8 @@ export default function App() {
 
             {/* Priority queue */}
             <div className="w-full lg:w-1/2">
-              <h2 className="text-xl font-semibold mb-2">Priority Queue</h2>
-              <p className="text-sm text-gray-600 mb-2">
+              <h2 className="mb-2 text-xl font-semibold">Priority Queue</h2>
+              <p className="mb-2 text-sm text-gray-600">
                 Drag and drop to reorder the priority queue.
               </p>
               <Droppable droppableId="priority-queue">
@@ -191,7 +182,7 @@ export default function App() {
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="space-y-2 h-[40vh] overflow-y-auto border-2 border-dashed border-gray-200 p-4 rounded-lg"
+                    className="h-[40vh] space-y-2 overflow-y-auto rounded-lg border-2 border-dashed border-gray-200 p-4"
                   >
                     {queue.map((item, index) => (
                       <Draggable
@@ -203,7 +194,7 @@ export default function App() {
                           <div
                             ref={provided.innerRef}
                             {...provided.draggableProps}
-                            className="flex items-center justify-between p-2 bg-white border rounded shadow"
+                            className="flex items-center justify-between rounded border p-2 shadow"
                           >
                             <span className="flex items-center">
                               <span
@@ -237,7 +228,7 @@ export default function App() {
           </div>
         </DragDropContext>
 
-        <div className="flex justify-center mt-4 gap-4">
+        <div className="mt-4 flex justify-center gap-4">
           <Button
             onClick={async () => await startSearch()}
             disabled={isLoading}
