@@ -1,4 +1,5 @@
 import BuildingSearchCard from "@/components/building-search-card";
+import Grid from "@/components/Grid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -9,7 +10,6 @@ import {
 } from "@hello-pangea/dnd";
 import { GripVertical, X } from "lucide-react";
 import { useState } from "react";
-import { Grid } from "./components/Grid";
 import {
   LOCATIONS,
   type Location,

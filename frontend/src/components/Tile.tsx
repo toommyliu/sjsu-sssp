@@ -7,9 +7,9 @@ import {
   TILE_STYLE,
   TRAVERSED_TILE_STYLE,
   WALL_TILE_STYLE,
-} from "../utils/constants";
+} from "@/utils/constants";
 
-export function Tile({
+export default function Tile({
   row,
   col,
   isStart,
