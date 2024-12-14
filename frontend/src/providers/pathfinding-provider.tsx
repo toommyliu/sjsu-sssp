@@ -1,7 +1,16 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import { GridType } from "../utils/types";
 import DefaultGrid from "../assets/grid.json";
-import { END_TILE_STYLE, MAX_COLS, MAX_ROWS, PATH_TILE_STYLE, START_TILE_STYLE, TILE_STYLE, TRAVERSED_TILE_STYLE, WALL_TILE_STYLE } from "@/utils/constants";
+import {
+  END_TILE_STYLE,
+  MAX_COLS,
+  MAX_ROWS,
+  PATH_TILE_STYLE,
+  START_TILE_STYLE,
+  TILE_STYLE,
+  TRAVERSED_TILE_STYLE,
+  WALL_TILE_STYLE,
+} from "@/utils/constants";
 import { cn } from "@/lib/utils";
 
 const PathfindingProviderContext = createContext<PathfindingProviderProps>({
@@ -24,25 +33,28 @@ export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
 
         let tileTyleStyle;
         const div = document.getElementById(`${tile.row}-${tile.col}`);
-        if (tile.isStart) {
-          tileTyleStyle = START_TILE_STYLE;
-        } else if (tile.isEnd) {
-          tileTyleStyle = END_TILE_STYLE;
-        } else if (tile.isWall) {
-          tileTyleStyle = WALL_TILE_STYLE;
-        } else if (tile.isPath) {
-          tileTyleStyle = PATH_TILE_STYLE;
-        } else if (tile.isTraversed) {
-          tileTyleStyle = TRAVERSED_TILE_STYLE;
-        } else {
-          tileTyleStyle = TILE_STYLE;
+
+        if (div) {
+          if (tile.isStart) {
+            tileTyleStyle = START_TILE_STYLE;
+          } else if (tile.isEnd) {
+            tileTyleStyle = END_TILE_STYLE;
+          } else if (tile.isWall) {
+            tileTyleStyle = WALL_TILE_STYLE;
+          } else if (tile.isPath) {
+            tileTyleStyle = PATH_TILE_STYLE;
+          } else if (tile.isTraversed) {
+            tileTyleStyle = TRAVERSED_TILE_STYLE;
+          } else {
+            tileTyleStyle = TILE_STYLE;
+          }
+
+          const borderStyle =
+            row === MAX_ROWS - 1 ? "border-b" : col === 0 ? "border-l" : "";
+          const edgeStyle = row === MAX_ROWS - 1 && col === 0 ? "border-l" : "";
+
+          div.className = cn(tileTyleStyle, borderStyle, edgeStyle);
         }
-
-        const borderStyle =
-          row === MAX_ROWS - 1 ? "border-b" : col === 0 ? "border-l" : "";
-        const edgeStyle = row === MAX_ROWS - 1 && col === 0 ? "border-l" : "";
-
-        div.className = cn(tileTyleStyle, borderStyle, edgeStyle);
       }
     }
   };
