@@ -22,7 +22,7 @@ export default function Grid() {
       )}
     >
       {grid.map((row, rowIndex) => (
-        <div key={rowIndex} className="flex">
+        <div className="flex" key={rowIndex}>
           {row.map((tile, tileIndex) => {
             const { isEnd, isStart, isPath, isTraversed, isWall } = tile;
 

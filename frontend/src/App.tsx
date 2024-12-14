@@ -15,7 +15,7 @@ import {
   type Location,
   type LocationWithUniqueId,
 } from "./locations";
-import { PathfindingProvider } from "./providers/pathfinding-provider";
+import { usePathfinding } from "@/providers/pathfinding-provider";
 import { animatePath } from "./utils/animatePath";
 
 export default function App() {
@@ -23,6 +23,8 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [, setPath] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const { resetGrid } = usePathfinding();
 
   function addToQueue(location: Location) {
     setQueue([
@@ -235,15 +237,20 @@ export default function App() {
           >
             {isLoading ? "Loading..." : "Start Search"}
           </Button>
-          <Button onClick={() => setQueue([])} disabled={isLoading}>
+          <Button
+            onClick={() => {
+              setQueue([]);
+              setPath(null);
+              resetGrid();
+            }}
+            disabled={isLoading}
+          >
             Reset
           </Button>
         </div>
       </div>
 
-      <PathfindingProvider>
-        <Grid />
-      </PathfindingProvider>
+      <Grid />
     </>
   );
 }
