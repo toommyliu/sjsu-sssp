@@ -22,7 +22,7 @@ export default function BuildingSearchCard({
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-      className="group flex w-[calc(50%-0.5rem)] items-center justify-between rounded border p-3 shadow"
+      className="group -z-10 flex w-[calc(50%-0.5rem)] items-center justify-between rounded border p-3 shadow"
       style={{
         ...provided.draggableProps.style,
         opacity: snapshot.isDragging ? 0.5 : 1,

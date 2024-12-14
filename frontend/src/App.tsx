@@ -2,20 +2,20 @@ import BuildingSearchCard from "@/components/building-search-card";
 import Grid from "@/components/grid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { usePathfinding } from "@/providers/pathfinding-provider";
 import {
   DragDropContext,
   Draggable,
   Droppable,
   type DropResult,
 } from "@hello-pangea/dnd";
-import { GripVertical, X } from "lucide-react";
+import { GripVertical, PlusCircle, X } from "lucide-react";
 import { useState } from "react";
 import {
   LOCATIONS,
   type Location,
   type LocationWithUniqueId,
 } from "./locations";
-import { usePathfinding } from "@/providers/pathfinding-provider";
 import { animatePath } from "./utils/animatePath";
 
 export default function App() {
@@ -131,41 +131,47 @@ export default function App() {
             {/* Buildings */}
             <div className="w-full lg:w-1/2">
               <h2 className="mb-2 text-xl font-semibold">Buildings</h2>
-              <p className="mb-2 text-sm text-gray-600">
-                Search for a building, drag a building, or click the plus to add
-                it to the priority queue.
+              <p className="mb-2 inline-block text-sm text-gray-600">
+                Add buildings to the priority queue by dragging or clicking +
               </p>
               <Droppable droppableId="locations">
                 {(provided) => (
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="flex h-[40vh] flex-col gap-4 overflow-x-auto overflow-y-auto rounded-lg border-2 border-dashed border-gray-200 p-4"
+                    className="flex h-[40vh] flex-col overflow-x-auto overflow-y-auto rounded-lg border-2 border-dashed border-gray-200"
                   >
-                    <Input
-                      type="text"
-                      placeholder="Search for a building..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="h-100 sticky top-0 z-10"
-                    />
-                    <div className="flex flex-wrap content-start gap-4">
-                      {filteredLocations.map((location, index) => (
-                        <Draggable
-                          key={location.id}
-                          draggableId={location.id}
-                          index={index}
-                        >
-                          {(provided, snapshot) => (
-                            <BuildingSearchCard
-                              provided={provided}
-                              snapshot={snapshot}
-                              location={location}
-                              addToQueue={addToQueue}
-                            />
-                          )}
-                        </Draggable>
-                      ))}
+                    <div className="sticky top-0 z-10 bg-white p-2">
+                      <Input
+                        type="text"
+                        placeholder="Search for a building..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex flex-wrap content-start gap-4 p-2">
+                      {filteredLocations.length === 0 ? (
+                        <div className="w-full p-3 text-center text-gray-500">
+                          No results found
+                        </div>
+                      ) : (
+                        filteredLocations.map((location, index) => (
+                          <Draggable
+                            key={location.id}
+                            draggableId={location.id}
+                            index={index}
+                          >
+                            {(provided, snapshot) => (
+                              <BuildingSearchCard
+                                provided={provided}
+                                snapshot={snapshot}
+                                location={location}
+                                addToQueue={addToQueue}
+                              />
+                            )}
+                          </Draggable>
+                        ))
+                      )}
                     </div>
                     {provided.placeholder}
                   </div>
