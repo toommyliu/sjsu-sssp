@@ -11,12 +11,12 @@ import type {
 } from "@hello-pangea/dnd";
 import { PlusCircle } from "lucide-react";
 
-export default function LocationCard({
+export default function BuildingCard({
   provided,
   snapshot,
   location,
   addToQueue,
-}: LocationCardProps) {
+}: BuildingCardProps) {
   return (
     <div
       ref={provided.innerRef}
@@ -48,7 +48,7 @@ export default function LocationCard({
   );
 }
 
-type LocationCardProps = {
+type BuildingCardProps = {
   provided: DraggableProvided;
   snapshot: DraggableStateSnapshot;
   location: Location;
