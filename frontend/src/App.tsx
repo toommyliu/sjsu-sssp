@@ -1,5 +1,5 @@
 import BuildingSearchCard from "@/components/building-search-card";
-import Grid from "@/components/Grid";
+import Grid from "@/components/grid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

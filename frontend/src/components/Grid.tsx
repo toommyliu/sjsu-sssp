@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { usePathfinding } from "@/providers/pathfinding-provider";
 import { MAX_COLS, MAX_ROWS } from "../utils/constants";
-import Tile from "@/components/Tile";
+import Tile from "@/components/tile";
 
 export default function Grid() {
   const { grid } = usePathfinding();
