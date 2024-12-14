@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useState } from "react";
-import { createGrid } from "../utils/helpers";
 import { GridType } from "../utils/types";
+import DefaultGrid from "../assets/grid.json";
 
 const PathfindingProviderContext = createContext<PathfindingProviderProps>({
   grid: [],
@@ -8,7 +8,7 @@ const PathfindingProviderContext = createContext<PathfindingProviderProps>({
 });
 
 export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
-  const [grid, setGrid] = useState<GridType>(createGrid());
+  const [grid, setGrid] = useState<GridType>(DefaultGrid as unknown as GridType);
 
   return (
     <PathfindingProviderContext.Provider
