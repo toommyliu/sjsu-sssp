@@ -1,4 +1,4 @@
-import BuildingCard from "@/components/building-card";
+import BuildingSearchCard from "@/components/building-search-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -155,7 +155,7 @@ export default function App() {
                           index={index}
                         >
                           {(provided, snapshot) => (
-                            <BuildingCard
+                            <BuildingSearchCard
                               provided={provided}
                               snapshot={snapshot}
                               location={location}
