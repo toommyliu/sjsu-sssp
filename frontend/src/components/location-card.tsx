@@ -1,13 +1,13 @@
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { Location } from "@/locations";
 import type {
-    DraggableProvided,
-    DraggableStateSnapshot
+  DraggableProvided,
+  DraggableStateSnapshot
 } from "@hello-pangea/dnd";
 import { PlusCircle } from "lucide-react";
 
