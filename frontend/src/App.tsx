@@ -30,7 +30,7 @@ export default function App() {
   const [path, setPath] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const isVisualizationRunningRef = useRef(false);
+  const isRunningRef = useRef(false);
 
   function addToQueue(location: Location) {
     setQueue([
@@ -271,7 +271,7 @@ export default function App() {
       </div>
 
       <PathfindingProvider>
-        <Grid isVisualizationRunningRef={isVisualizationRunningRef} />
+        <Grid />
       </PathfindingProvider>
     </>
   );
