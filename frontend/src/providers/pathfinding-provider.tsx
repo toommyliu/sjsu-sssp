@@ -32,6 +32,7 @@ export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
         const tile = grid[row][col];
 
         let tileTyleStyle;
+
         const div = document.getElementById(`${tile.row}-${tile.col}`);
 
         if (div) {
