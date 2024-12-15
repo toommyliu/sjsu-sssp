@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useContext, useState } from "react";
-import { GridType } from "../utils/types";
+import { Grid } from "../utils/types";
 import DefaultGrid from "../assets/grid.json";
 import {
   END_TILE_STYLE,
@@ -20,12 +20,12 @@ const PathfindingProviderContext = createContext<PathfindingProviderProps>({
 });
 
 export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
-  const [grid, setGrid] = useState<GridType>(
-    DefaultGrid as unknown as GridType,
+  const [grid, setGrid] = useState<Grid>(
+    DefaultGrid as unknown as Grid,
   );
 
   const resetGrid = () => {
-    setGrid(DefaultGrid as unknown as GridType);
+    setGrid(DefaultGrid as unknown as Grid);
 
     for (let row = 0; row < MAX_ROWS; row++) {
       for (let col = 0; col < MAX_COLS; col++) {
@@ -84,7 +84,7 @@ export const usePathfinding = () => {
 };
 
 type PathfindingProviderProps = {
-  grid: GridType;
-  setGrid: (grid: GridType) => void;
+  grid: Grid;
+  setGrid: (grid: Grid) => void;
   resetGrid: () => void;
 };

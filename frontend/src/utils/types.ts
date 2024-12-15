@@ -1,4 +1,4 @@
-export type TileType = {
+export type Tile = {
   row: number;
   col: number;
   isEnd: boolean;
@@ -7,7 +7,7 @@ export type TileType = {
   distance: number;
   isTraversed: boolean;
   isStart: boolean;
-  parent: TileType | null;
+  parent: Tile | null;
 };
 
-export type GridType = TileType[][];
+export type Grid = Tile[][];
