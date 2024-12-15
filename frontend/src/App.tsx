@@ -1,30 +1,27 @@
-import BuildingSearchCard from "@/components/building-search-card";
+import BuildingQueue from "@/components/building-queue";
+import BuildingSearch from "@/components/building-search";
 import Grid from "@/components/grid";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { usePathfinding } from "@/providers/pathfinding-provider";
+import { useStore } from "@/store/store";
 import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  type DropResult,
-} from "@hello-pangea/dnd";
-import { GripVertical, X } from "lucide-react";
+  BUILDING_SEARCH_ID,
+  PATH_TILE_STYLE,
+  PRIORITY_QUEUE_ID,
+} from "@/utils/constants";
+import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { LOCATIONS } from "./locations";
 import { animatePath } from "./utils/animatePath";
-import toast from "react-hot-toast";
-import axios, { AxiosError } from "axios";
-import { PATH_TILE_STYLE } from "@/utils/constants";
-import { useStore } from "@/store/store";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [, setPath] = useState<any>(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const { resetGrid, initializeDefaultGridStyles } = usePathfinding();
-  const { queue, setQueue, removeFromQueue } = useStore((store) => store);
+  const { queue, setQueue } = useStore((store) => store);
 
   function onDragEnd(result: DropResult) {
     if (!result.destination) return;
@@ -32,8 +29,8 @@ export default function App() {
     const { source, destination } = result;
 
     if (
-      source.droppableId === "locations" &&
-      destination.droppableId === "priority-queue"
+      source.droppableId === BUILDING_SEARCH_ID &&
+      destination.droppableId === PRIORITY_QUEUE_ID
     ) {
       const location = LOCATIONS[source.index];
       const newQueue = [
@@ -43,8 +40,8 @@ export default function App() {
       ];
       setQueue(newQueue);
     } else if (
-      source.droppableId === "priority-queue" &&
-      destination.droppableId === "priority-queue"
+      source.droppableId === PRIORITY_QUEUE_ID &&
+      destination.droppableId === PRIORITY_QUEUE_ID
     ) {
       const newQueue = Array.from(queue);
       const [reorderedItem] = newQueue.splice(source.index, 1);
@@ -129,12 +126,6 @@ export default function App() {
     }
   };
 
-  const filteredLocations = LOCATIONS.filter(
-    (location) =>
-      location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      location.id.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
   return (
     <>
       <div className="container mx-auto p-4">
@@ -143,109 +134,20 @@ export default function App() {
         </h1>
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="flex flex-col gap-8 lg:flex-row">
-            {/* Buildings */}
             <div className="w-full lg:w-1/2">
               <h2 className="mb-2 text-xl font-semibold">Buildings</h2>
               <p className="mb-2 inline-block text-sm text-gray-600">
                 Add buildings to the priority queue by dragging or clicking +
               </p>
-              <Droppable droppableId="locations">
-                {(provided) => (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    className="flex h-[40vh] flex-col overflow-x-auto overflow-y-auto rounded-lg border-2 border-dashed border-gray-200"
-                  >
-                    <div className="sticky top-0 z-10 bg-white p-2">
-                      <Input
-                        type="text"
-                        placeholder="Search for a building..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                    </div>
-                    <div className="flex flex-wrap content-start gap-4 p-2">
-                      {filteredLocations.length === 0 ? (
-                        <div className="w-full p-3 text-center text-gray-500">
-                          No results found
-                        </div>
-                      ) : (
-                        filteredLocations.map((location, index) => (
-                          <Draggable
-                            key={location.id}
-                            draggableId={location.id}
-                            index={index}
-                          >
-                            {(provided, snapshot) => (
-                              <BuildingSearchCard
-                                provided={provided}
-                                snapshot={snapshot}
-                                location={location}
-                              />
-                            )}
-                          </Draggable>
-                        ))
-                      )}
-                    </div>
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
+              <BuildingSearch />
             </div>
 
-            {/* Priority queue */}
             <div className="w-full lg:w-1/2">
               <h2 className="mb-2 text-xl font-semibold">Priority Queue</h2>
               <p className="mb-2 text-sm text-gray-600">
                 Drag and drop to reorder the priority queue.
               </p>
-              <Droppable droppableId="priority-queue">
-                {(provided) => (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    className="h-[40vh] space-y-2 overflow-y-auto rounded-lg border-2 border-dashed border-gray-200 p-4"
-                  >
-                    {queue.map((item, index) => (
-                      <Draggable
-                        key={item.uniqueId}
-                        draggableId={item.uniqueId}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            className="flex items-center justify-between rounded border p-2 shadow"
-                          >
-                            <span className="flex items-center">
-                              <span
-                                {...provided.dragHandleProps}
-                                className="mr-2 cursor-move"
-                              >
-                                <GripVertical
-                                  className="h-4 w-4 text-gray-400"
-                                  aria-hidden="true"
-                                />
-                              </span>
-                              <span className="truncate">{item.name}</span>
-                            </span>
-                            <Button
-                              variant="outline"
-                              size="icon"
-                              onClick={() => removeFromQueue(index)}
-                              className="shrink-0"
-                            >
-                              <X className="h-4 w-4 text-red-500 hover:text-red-700" />
-                            </Button>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
+              <BuildingQueue />
             </div>
           </div>
         </DragDropContext>
