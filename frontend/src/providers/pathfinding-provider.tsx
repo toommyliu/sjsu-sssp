@@ -55,6 +55,7 @@ export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
           const edgeStyle = row === MAX_ROWS - 1 && col === 0 ? "border-l" : "";
 
           div.className = cn(tileTyleStyle, borderStyle, edgeStyle);
+          div.innerHTML = '';
         }
       }
     }

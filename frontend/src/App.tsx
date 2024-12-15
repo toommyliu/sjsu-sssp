@@ -98,8 +98,14 @@ export default function App() {
                 );
                 animatePath(
                   segment.path,
-                  segment.startTilePosition,
-                  segment.endTilePosition,
+                  {
+                    building: segment.startTile,
+                    position: segment.startTilePosition,
+                  },
+                  {
+                    building: segment.endTile,
+                    position: segment.endTilePosition,
+                  },
                 );
                 await new Promise((resolve) => setTimeout(resolve, 1000));
               }
