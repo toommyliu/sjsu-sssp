@@ -13,7 +13,7 @@ import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { LOCATIONS } from "./locations";
+import { LOCATIONS } from "./utils/locations";
 import { animatePath } from "./utils/animatePath";
 
 export default function App() {

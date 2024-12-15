@@ -4,7 +4,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import type { Location } from "@/locations";
+import type { Location } from "@/utils/locations";
 import { useStore } from "@/store/store";
 import type {
   DraggableProvided,

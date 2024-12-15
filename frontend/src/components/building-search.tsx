@@ -1,6 +1,6 @@
 import BuildingSearchCard from "@/components/building-search-card";
 import { Input } from "@/components/ui/input";
-import { LOCATIONS } from "@/locations";
+import { LOCATIONS } from "@/utils/locations";
 import { useStore } from "@/store/store";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { BUILDING_SEARCH_ID } from "@/utils/constants";

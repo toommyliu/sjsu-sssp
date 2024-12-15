@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Location, LocationWithUniqueId } from "@/locations";
+import type { Location, LocationWithUniqueId } from "@/utils/locations";
 
 export const useStore = create<StoreState>()((set) => ({
   queue: [],
