@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/cn";
 
 export const MAX_COLS = 50;
 export const MAX_ROWS = 47;

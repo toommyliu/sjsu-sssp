@@ -6,7 +6,7 @@ import {
   MAX_ROWS,
 } from "@/utils/constants";
 import { Tile } from "@/utils/types";
-import { cn } from "../lib/utils";
+import { cn } from "../lib/cn";
 
 export function getTileStyle({ row, col, isPath, isWall }: Tile) {
   let tileStyle;
