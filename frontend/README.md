@@ -54,6 +54,6 @@ npm run dev
 ```
 
 4. **Access the application**  
-```
-http://localhost:5173
-```
+Visit [http://localhost:5173](http://localhost:5173) on your local machine.
+
+[frontend](/frontend/) requires interaction with [backend](../backend/), make sure it is running before using any functionality.
