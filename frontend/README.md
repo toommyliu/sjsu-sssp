@@ -1,6 +1,6 @@
 # SJSU SSSP - Frontend
 
-The **[frontend](/frontend)** provides an interactive and user-friendly interface for visualizing the SJSU campus and calculating the shortest paths between buildings. 
+The **[frontend](/frontend)** provides an interactive and user-friendly interface for visualizing the SJSU campus and calculating the shortest paths between buildings.
 
 ## Technologies Used
 
@@ -17,7 +17,7 @@ Follow these steps to set up and run the project on your local machine.
 Before you begin, ensure you have the following tools installed:
 
 - **[Node.js](https://nodejs.org/)/[npm](https://npmjs.com):** (LTS or latest)
-- **[Git](https://git-scm.com/downloads)** 
+- **[Git](https://git-scm.com/downloads)**
 
 #### Verify Installations
 
@@ -35,25 +35,25 @@ git -v
 ```
 ---
 
-### Installation
+### Installation & Setup
 
-1. **Clone the repository**  
+1. **Clone the repository**
 ```bash
 git clone https://github.com/toommyliu/cs146-finalproject/
 cd frontend
 ```
 
-2. **Install dependencies**  
+2. **Install dependencies**
 ```bash
 npm install
 ```
 
-3. **Run the development server**  
+3. **Run the development server**
 ```bash
 npm run dev
 ```
 
-4. **Access the application**  
+4. **Access the application**
 Visit [http://localhost:5173](http://localhost:5173) on your local machine.
 
 [frontend](/frontend/) requires interaction with [backend](../backend/), make sure it is running before using any functionality.
