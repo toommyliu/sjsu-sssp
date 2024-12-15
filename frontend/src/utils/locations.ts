@@ -46,5 +46,15 @@ export const LOCATIONS = [
   { id: "CVA", name: "Campus Village A" },
 ];
 
+export function getBuildingNameFromId(id: string): string {
+  const location = LOCATIONS.find((location) => location.id === id);
+  return location ? location.name : id;
+}
+
+export function getIdFromBuildingName(name: string): string {
+  const location = LOCATIONS.find((location) => location.name === name);
+  return location ? location.id : name;
+}
+
 export type Location = { id: string; name: string };
 export type LocationWithUniqueId = Location & { uniqueId: string };
