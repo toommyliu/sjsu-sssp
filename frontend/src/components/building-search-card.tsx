@@ -5,6 +5,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { Location } from "@/locations";
+import { useStore } from "@/store/store";
 import type {
   DraggableProvided,
   DraggableStateSnapshot,
@@ -18,8 +19,9 @@ export default function BuildingSearchCard({
   provided,
   snapshot,
   location,
-  addToQueue,
 }: BuildingSearchCardProps) {
+  const { addToQueue } = useStore((store) => store);
+
   return (
     <div
       ref={provided.innerRef}
@@ -55,5 +57,4 @@ type BuildingSearchCardProps = {
   provided: DraggableProvided;
   snapshot: DraggableStateSnapshot;
   location: Location;
-  addToQueue: (location: Location) => void;
 };

@@ -11,34 +11,20 @@ import {
 } from "@hello-pangea/dnd";
 import { GripVertical, X } from "lucide-react";
 import { useState } from "react";
-import {
-  LOCATIONS,
-  type Location,
-  type LocationWithUniqueId,
-} from "./locations";
+import { LOCATIONS } from "./locations";
 import { animatePath } from "./utils/animatePath";
 import toast from "react-hot-toast";
 import axios, { AxiosError } from "axios";
 import { PATH_TILE_STYLE } from "@/utils/constants";
+import { useStore } from "@/store/store";
 
 export default function App() {
-  const [queue, setQueue] = useState<LocationWithUniqueId[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [, setPath] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const { resetGrid, initializeDefaultGridStyles } = usePathfinding();
-
-  function addToQueue(location: Location) {
-    setQueue([
-      ...queue,
-      { ...location, uniqueId: `${location.id}-${Date.now()}` },
-    ]);
-  }
-
-  function removeFromQueue(index: number) {
-    setQueue(queue.filter((_, i) => i !== index));
-  }
+  const { queue, setQueue, removeFromQueue } = useStore((store) => store);
 
   function onDragEnd(result: DropResult) {
     if (!result.destination) return;
@@ -68,7 +54,6 @@ export default function App() {
   }
 
   const startSearch = async () => {
-    // TODO: display alert
     if (queue.length < 2) {
       toast.error("2 or more buildings are required to start.", {
         id: "error",
@@ -196,7 +181,6 @@ export default function App() {
                                 provided={provided}
                                 snapshot={snapshot}
                                 location={location}
-                                addToQueue={addToQueue}
                               />
                             )}
                           </Draggable>
