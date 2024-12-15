@@ -14,6 +14,15 @@ public class Grid {
         this.tiles = tiles;
     }
 
+    public Tile getTileAt(int row, int col) {
+        // Ensure row and col are within grid bounds
+        if (row < 0 || row >= tiles.length || col < 0 || col >= tiles[0].length) {
+            return null;
+        }
+
+        return tiles[row][col];
+    }
+
     public Tile getStartTile() {
         for (Tile[] row : tiles) {
             for (Tile tile : row) {
