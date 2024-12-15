@@ -9,7 +9,7 @@ import {
   Droppable,
   type DropResult,
 } from "@hello-pangea/dnd";
-import { GripVertical, PlusCircle, X } from "lucide-react";
+import { GripVertical, X } from "lucide-react";
 import { useState } from "react";
 import {
   LOCATIONS,
@@ -65,6 +65,12 @@ export default function App() {
   }
 
   const startSearch = async () => {
+    // TODO: display alert
+    if (queue.length < 2) {
+      alert("bad queue");
+      return;
+    }
+
     setPath(null);
     setIsLoading(true);
 
