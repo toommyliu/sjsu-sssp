@@ -9,14 +9,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+const pinRegistry = new Map<string, PinInfo>();
+
 const MapPin = ({
-  buildingName,
-  index,
+  orders,
 }: {
-  buildingName: string;
-  index: number;
+  orders: { buildingName: string; index: number }[];
 }) => {
-  const displayIndex = index + 1;
+  const indicies = [...new Set(orders.map((o) => o.index + 1))];
 
   return (
     <TooltipProvider>
@@ -26,17 +26,18 @@ const MapPin = ({
             color="#f1f5f9" // tailwind slate-700
             className="-mt-[17px] ml-[2px] size-2 sm:ml-[0px] sm:mt-[-20px] sm:size-3 md:-ml-[0px] md:-mt-[20px] md:size-4 lg:-mt-[2px] lg:size-5"
           />
-          <span className="relative -right-3 -top-[2.7rem] rounded-md bg-gray-800 p-1 text-sm font-bold text-red-500 shadow-2xl">
-            {displayIndex}
+          <span className="relative -right-3 -top-[2.7rem] text-nowrap rounded-md bg-slate-900 p-1 text-sm font-bold text-white shadow-2xl">
+            {indicies.join(", ")}
           </span>
         </TooltipTrigger>
-        <TooltipContent>{`${buildingName} (#${displayIndex})`}</TooltipContent>
+        <TooltipContent>
+          {orders[0].buildingName} (
+          {indicies.map((idx) => `#${idx}`).join(", ")})
+        </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
 };
-
-const pinRegistry = new Map<string, { root: Root; index: number }>();
 
 export const animatePath = (
   path: Tile[],
@@ -73,15 +74,21 @@ export const animatePath = (
     const existing = pinRegistry.get(tileId);
 
     if (existing) {
-      // If we already have a pin here, update it
-      existing.root.render(<MapPin buildingName={building} index={index} />);
+      // If we already have a pin here, update the list
+      const updatedOrders = [
+        ...existing.orders,
+        { buildingName: building, index },
+      ];
+      existing.root.render(<MapPin orders={updatedOrders} />);
+      pinRegistry.set(tileId, { ...existing, orders: updatedOrders });
     } else {
       // Create new pin
       const div = document.createElement("div");
       const root = createRoot(div);
-      root.render(<MapPin buildingName={building} index={index} />);
+      const orders = [{ buildingName: building, index }];
+      root.render(<MapPin orders={orders} />);
       document.getElementById(tileId)!.appendChild(div);
-      pinRegistry.set(tileId, { root, index });
+      pinRegistry.set(tileId, { root, orders });
     }
   };
 
@@ -90,4 +97,9 @@ export const animatePath = (
 
   updateOrCreatePin(startTileId, startTile.building, startTile.index);
   updateOrCreatePin(endTileId, endTile.building, endTile.index);
+};
+
+type PinInfo = {
+  root: Root;
+  orders: { buildingName: string; index: number }[];
 };
