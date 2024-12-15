@@ -1,8 +1,18 @@
-import { MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
 import { useEffect, useState } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
 
 export default function PathOverlay({ paths }) {
-  const [currentTileSize, setCurrentTileSize] = useState(8);
+  const [currentTileSize, setCurrentTileSize] = useState<number>(
+    TILE_SIZE.base,
+  );
+  const [activeSegment, setActiveSegment] = useState(null);
+  const [hoveredSegment, setHoveredSegment] = useState(null);
 
   useEffect(() => {
     const updateTileSize = () => {
@@ -20,7 +30,6 @@ export default function PathOverlay({ paths }) {
     };
 
     updateTileSize();
-
     const mediaQueries = [
       window.matchMedia("(min-width: 1024px)"),
       window.matchMedia("(min-width: 768px)"),
@@ -31,7 +40,6 @@ export default function PathOverlay({ paths }) {
     const listener = () => updateTileSize();
     mediaQueries.forEach((query) => query.addListener(listener));
 
-    // Cleanup
     return () => {
       mediaQueries.forEach((query) => query.removeListener(listener));
     };
@@ -43,20 +51,43 @@ export default function PathOverlay({ paths }) {
     return `0 0 ${width} ${height}`;
   };
 
-  const gridToSvgCoords = (row, col) => {
+  const gridToSvgCoords = (row, col) => ({
+    x: (col + 0.5) * currentTileSize,
+    y: (row + 0.5) * currentTileSize,
+  });
+
+  const getPathStyles = (segmentIndex) => {
+    const isActive = activeSegment === segmentIndex;
+    const isHovered = hoveredSegment === segmentIndex;
+    const isSecondary = activeSegment !== null && !isActive;
+
     return {
-      x: (col + 0.5) * currentTileSize,
-      y: (row + 0.5) * currentTileSize,
+      strokeWidth: isActive || isHovered ? "4" : "3",
+      stroke: isActive
+        ? "#2563eb"
+        : isHovered
+          ? "#3b82f6"
+          : isSecondary
+            ? "#94a3b8"
+            : "#22c55e",
+      opacity: isSecondary ? 0.4 : 1,
+      transition: "all 0.2s ease-in-out",
     };
   };
 
+  const getSegmentInfo = (segment) => {
+    const distance = segment.path.length * currentTileSize;
+    return `${segment.startTile} → ${segment.endTile} (${Math.round(distance)} units)`;
+  };
+
   return (
-    <div className="pointer-events-none absolute inset-0">
+    <div className="absolute inset-0">
       <svg
         className="h-full w-full"
         viewBox={getViewBox()}
         preserveAspectRatio="xMidYMid meet"
       >
+        {/* Draw circles for start/end points */}
         {paths.map((segment, segmentIndex) => {
           if (!segment.path?.length) return null;
 
@@ -65,25 +96,69 @@ export default function PathOverlay({ paths }) {
             return `${acc}${i === 0 ? "M" : "L"}${x},${y}`;
           }, "");
 
+          const styles = getPathStyles(segmentIndex);
+
+          const startPoint = gridToSvgCoords(
+            segment.path[0].row,
+            segment.path[0].col,
+          );
+          const endPoint = gridToSvgCoords(
+            segment.path[segment.path.length - 1].row,
+            segment.path[segment.path.length - 1].col,
+          );
+
           return (
-            <g key={segmentIndex}>
-              <path
-                d={pathData}
-                fill="none"
-                stroke="#22c55e"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="animate-draw-path"
-                style={{
-                  strokeDasharray: 1000,
-                  strokeDashoffset: 1000,
-                }}
-              />
-            </g>
+            <TooltipProvider key={segmentIndex}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <g
+                    onMouseEnter={() => setHoveredSegment(segmentIndex)}
+                    onMouseLeave={() => setHoveredSegment(null)}
+                    onClick={() =>
+                      setActiveSegment(
+                        activeSegment === segmentIndex ? null : segmentIndex,
+                      )
+                    }
+                    className="cursor-pointer"
+                  >
+                    {/* Invisible wider path for better click handling */}
+                    <path
+                      d={pathData}
+                      stroke="transparent"
+                      strokeWidth="20"
+                      fill="none"
+                    />
+                    {/* Visible path */}
+                    <path
+                      d={pathData}
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="transition-all duration-300"
+                      {...styles}
+                    />
+                    {/* Start point */}
+                    <circle
+                      cx={startPoint.x}
+                      cy={startPoint.y}
+                      r={styles.strokeWidth * 1.5}
+                      fill={styles.stroke}
+                    />
+                    {/* End point */}
+                    <circle
+                      cx={endPoint.x}
+                      cy={endPoint.y}
+                      r={styles.strokeWidth * 1.5}
+                      fill={styles.stroke}
+                    />
+                  </g>
+                </TooltipTrigger>
+                <TooltipContent>{getSegmentInfo(segment)}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           );
         })}
       </svg>
     </div>
   );
-};
+}
