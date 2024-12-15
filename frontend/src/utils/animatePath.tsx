@@ -1,7 +1,7 @@
 import { MapPinIcon } from "lucide-react";
 import { createRoot } from "react-dom/client";
 import { PATH_TILE_STYLE } from "./constants";
-import type { TileType } from "./types";
+import type { Tile } from "./types";
 import {
   Tooltip,
   TooltipContent,
@@ -14,7 +14,10 @@ const MapPin = ({ buildingName }: { buildingName: string }) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <MapPinIcon size={16} color="white" className="ml-[1.7px]" />
+          <MapPinIcon
+            color="white"
+            className="ml-[2px] -mt-[17px] size-2 md:-ml-[0px] md:-mt-[4px] md:size-4 lg:-mt-[2px] lg:ml-[0.8px] lg:size-5"
+          />
         </TooltipTrigger>
         <TooltipContent>{buildingName ?? "Location"}</TooltipContent>
       </Tooltip>
@@ -23,17 +26,11 @@ const MapPin = ({ buildingName }: { buildingName: string }) => {
 };
 
 export const animatePath = (
-  path: TileType[],
-  /**
-   * The start tile coordinates as a tuple
-   */
+  path: Tile[],
   startTile: {
     building: string;
     position: number[];
   },
-  /**
-   * The end tile coordinates as a tuple
-   */
   endTile: {
     building: string;
     position: number[];
