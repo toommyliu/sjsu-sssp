@@ -2,13 +2,13 @@ import Tile from "@/components/tile";
 import { cn } from "@/lib/cn";
 import { usePathfinding } from "@/providers/pathfinding-provider";
 import { MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
-import { useStore } from "@/lib/store";
 import PathOverlay from "./path-overlay";
+import { usePathStore } from "@/lib/path-store";
 
 // Grid component
 export default function Grid() {
   const { grid } = usePathfinding();
-  const { path } = useStore((store) => store);
+  const { path } = usePathStore((store) => store);
 
   return (
     <div className="relative">

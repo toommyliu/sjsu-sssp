@@ -10,13 +10,14 @@ import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { BUILDINGS } from "@/utils/buildings";
-import { animatePath } from "@/utils/animatePath";
+import { usePathStore } from "@/lib/path-store";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { resetGrid, initializeDefaultGridStyles } = usePathfinding();
-  const { queue, setQueue, setPath } = useStore((store) => store);
+  const { queue, setQueue } = useStore((store) => store);
+  const { setPath } = usePathStore(store => store);
 
   function onDragEnd(result: DropResult) {
     if (!result.destination) return;
