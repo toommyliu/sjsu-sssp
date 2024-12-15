@@ -38,7 +38,7 @@ export const animatePath = (
 ) => {
   for (const tile of path) {
     document.getElementById(`${tile.row}-${tile.col}`)!.className =
-      `${PATH_TILE_STYLE} animate-path`;
+      `${PATH_TILE_STYLE}`;
   }
 
   const elStartTile = document.getElementById(
@@ -61,7 +61,4 @@ export const animatePath = (
 
     elEndTile.appendChild(div);
   }
-
-  elStartTile.classList.add("animate-path");
-  elEndTile.classList.add("animate-path");
 };
