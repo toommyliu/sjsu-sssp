@@ -18,6 +18,7 @@ import {
 } from "./locations";
 import { animatePath } from "./utils/animatePath";
 import toast from "react-hot-toast";
+import axios, { AxiosError } from "axios";
 
 export default function App() {
   const [queue, setQueue] = useState<LocationWithUniqueId[]>([]);
@@ -77,56 +78,56 @@ export default function App() {
     setPath(null);
     setIsLoading(true);
 
-    await fetch("http://localhost:3000/dijkstra", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    try {
+      const resp = await axios.post("http://localhost:3000/dijkstra", {
         locations: queue.map((loc) => loc.id),
-      }),
-    })
-      .then(async (res) => res.json())
-      .then(async (data) => {
-        console.log("data", data);
-        if (data?.status === "success") {
-          console.log("yes (1)");
-          if (Array.isArray(data.segments) && data.segments.length > 0) {
-            console.log("yes (2)");
-            setPath(data.segments);
-            for (const segment of data.segments) {
-              if (Array.isArray(segment.path) && segment.path.length > 0) {
-                console.log(
-                  `animate path from ${segment.startTile} to ${segment.endTile}`,
-                );
-                animatePath(
-                  segment.path,
-                  {
-                    building: segment.startTile,
-                    position: segment.startTilePosition,
-                  },
-                  {
-                    building: segment.endTile,
-                    position: segment.endTilePosition,
-                  },
-                );
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-              }
-            }
-          } else {
-            console.log(
-              "no (2)",
-              Array.isArray(data.segments),
-              data.segments.length,
-            );
-          }
-        } else {
-          console.log("no (1)");
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
+
+      if (resp.status === 200 && resp.data?.status === "success") {
+        console.log("resp", resp);
+
+        const { data } = resp;
+
+        setPath(data.segments);
+        for (const segment of data.segments) {
+          if (Array.isArray(segment.path) && segment.path.length > 0) {
+            console.log(
+              `animate path from ${segment.startTile} to ${segment.endTile}`,
+            );
+            animatePath(
+              segment.path,
+              {
+                building: segment.startTile,
+                position: segment.startTilePosition,
+              },
+              {
+                building: segment.endTile,
+                position: segment.endTilePosition,
+              },
+            );
+            await new Promise((resolve) => setTimeout(resolve, 5_00));
+          }
+        }
+      } else {
+        console.log("resp", resp);
+        toast.error("An error occurred");
+      }
+    } catch (error) {
+      console.error(
+        "An error occured while trying to run the path:",
+        error,
+        queue,
+      );
+
+      if (error instanceof AxiosError) {
+        toast.error(`An error occured: ${error.message}`);
+      } else if (error instanceof Error) {
+        const err = error as Error;
+        toast.error(`An error occured${err?.message ? ` ${err.message}` : ""}`);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const filteredLocations = LOCATIONS.filter(
