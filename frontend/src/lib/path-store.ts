@@ -1,3 +1,4 @@
+import { Tile } from "@/utils/types";
 import { create } from "zustand";
 
 export const usePathStore = create<PathStoreState>()((set) => ({
@@ -6,6 +7,15 @@ export const usePathStore = create<PathStoreState>()((set) => ({
 }));
 
 type PathStoreState = {
-  path: Array<any>;
-  setPath: (paths: Array<any>) => void;
+  path: PathSegment[];
+  setPath: (paths: PathSegment[]) => void;
+};
+
+type PathSegment = {
+  path: Tile[];
+  traversedTiles: []; // unused
+  startTile: string; // building id
+  endTile: string; // building id
+  startTilePosition: [number, number];
+  endTilePosition: [number, number];
 };
