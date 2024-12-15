@@ -17,6 +17,9 @@ export const useStore = create<StoreState>()((set) => ({
     })),
   searchQuery: "",
   setSearchQuery: (query) => set(() => ({ searchQuery: query })),
+
+  path: [],
+  setPath: (path) => set({ path }),
 }));
 
 type StoreState = {
@@ -29,4 +32,7 @@ type StoreState = {
   // Search query for building search
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+
+  path: Array<any>;
+  setPath: (paths: Array<any>) => void;
 };

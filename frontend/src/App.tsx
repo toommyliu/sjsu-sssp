@@ -18,10 +18,9 @@ import { animatePath } from "@/utils/animatePath";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
-  const [, setPath] = useState<any>(null);
 
   const { resetGrid, initializeDefaultGridStyles } = usePathfinding();
-  const { queue, setQueue } = useStore((store) => store);
+  const { queue, setQueue, path, setPath } = useStore((store) => store);
 
   function onDragEnd(result: DropResult) {
     if (!result.destination) return;
@@ -60,7 +59,7 @@ export default function App() {
 
     initializeDefaultGridStyles();
 
-    setPath(null);
+    setPath([]);
     setIsLoading(true);
 
     try {
@@ -82,12 +81,12 @@ export default function App() {
           }
 
           // Style path nodes
-          for (const tile of segment.path) {
-            const div = document.getElementById(`${tile.row}-${tile.col}`);
-            if (!div) return;
+          // for (const tile of segment.path) {
+          //   const div = document.getElementById(`${tile.row}-${tile.col}`);
+          //   if (!div) return;
 
-            div.className = PATH_TILE_STYLE;
-          }
+          //   div.className = PATH_TILE_STYLE;
+          // }
 
           animatePath(
             {
