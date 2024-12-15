@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Server {
+	// Initialize required data to run Dijkstra's Algorithm
 	private static void doInitialization() {
 		Entrances.initialize();
 		Grid.initialize();
@@ -70,39 +71,11 @@ public class Server {
 			try {
 				String jsonStr = requestBody.toString();
 				JSONObject json = new JSONObject(jsonStr);
-				json.put("grid", new JSONArray(Grid.getGridStr()));
 
 				// Prepare to run Dijsktra's algorithm
-
 				JSONArray locationsArr = (JSONArray) json.get("locations");
-				JSONArray gridArr = (JSONArray) json.get("grid");
 
-				Grid grid = new Grid();
-				int rows = gridArr.length();
-				int cols = gridArr.getJSONArray(0).length();
-				Tile[][] tiles = new Tile[rows][cols];
-
-				for (int i = 0; i < rows; i++) {
-					JSONArray row = gridArr.getJSONArray(i);
-					for (int j = 0; j < cols; j++) {
-						JSONObject tileObj = row.getJSONObject(j);
-						Tile tile = new Tile();
-
-						tile.setRow(tileObj.getInt("row"));
-						tile.setCol(tileObj.getInt("col"));
-						tile.setDistance(Integer.MAX_VALUE);
-						tile.setEnd(tileObj.getBoolean("isEnd"));
-						tile.setWall(tileObj.getBoolean("isWall"));
-						tile.setPath(tileObj.getBoolean("isPath"));
-						tile.setTraversed(tileObj.getBoolean("isTraversed"));
-						tile.setStart(tileObj.getBoolean("isStart"));
-
-						tiles[i][j] = tile;
-					}
-				}
-
-				Grid cloneGrid = new Grid();
-				cloneGrid.setTiles(tiles);
+				Grid grid = Grid.getDefault();
 
 				JSONObject finalRes = new JSONObject();
 				finalRes.put("status", "success");
@@ -118,40 +91,34 @@ public class Server {
 						continue;
 					}
 
-					for (int x = 0; x < rows; x++) {
-						JSONArray row = gridArr.getJSONArray(x);
-						for (int y = 0; y < cols; y++) {
-							JSONObject tileObj = row.getJSONObject(y);
-							Tile tile = new Tile();
-
-							tile.setRow(tileObj.getInt("row"));
-							tile.setCol(tileObj.getInt("col"));
-							tile.setDistance(Integer.MAX_VALUE);
-							tile.setEnd(tileObj.getBoolean("isEnd"));
-							tile.setWall(tileObj.getBoolean("isWall"));
-							tile.setPath(tileObj.getBoolean("isPath"));
-							tile.setTraversed(tileObj.getBoolean("isTraversed"));
-							tile.setStart(tileObj.getBoolean("isStart"));
-
-							tiles[x][y] = tile;
-						}
-					}
+					grid.reset();
 
 					System.out.println("Processing pair: [" + startBuilding + ", " + endBuilding + "]");
 
 					SimpleEntry<Integer, Integer> startBuildingEntrance = Entrances.getEntrances().get(startBuilding);
+					SimpleEntry<Integer, Integer> endBuildingEntrance = Entrances.getEntrances().get(endBuilding);
 
-					// System.out.println(startBuilding + " | " + startBuildingEntrance);
+					int startTileRow = startBuildingEntrance.getKey();
+					int startTileCol = startBuildingEntrance.getValue();
 
-					// disable iswall
-					tiles[startBuildingEntrance.getKey()][startBuildingEntrance.getValue()].setWall(false);
-					tiles[startBuildingEntrance.getKey()][startBuildingEntrance.getValue()].setStart(true);
+					int endTileRow = endBuildingEntrance.getKey();
+					int endTileCol = endBuildingEntrance.getValue();
+
+					Tile startTile = grid.getTileAt(startTileRow, startTileCol);
+					Tile endTile = grid.getTileAt(endTileRow, endTileCol);
+
+					// In the frontend, start/end tiles are visualized as walls, so they must be set
+					// as
+					// a generic tile for Dijkstra to run properly.
+					startTile.setWall(false);
+					startTile.setStart(true);
+					endTile.setEnd(true);
+					endTile.setWall(false);
 
 					System.out.println("Start: " + startBuilding + " | End: " + endBuilding);
 
-					SimpleEntry<Integer, Integer> endBuildingEntrance = Entrances.getEntrances().get(endBuilding);
-
-					if (startBuilding.equals(endBuilding)) {
+					// Avoid computation time if the start and end building are the same
+					if (startBuilding.equalsIgnoreCase(endBuilding)) {
 						System.out.println("Start and end buildings are the same: " + startBuilding);
 
 						String res = new JSONObject()
@@ -159,63 +126,46 @@ public class Server {
 								.put("path", new JSONArray())
 								.put("startTile", startBuilding)
 								.put("endTile", endBuilding)
-								.put("startTilePosition",
-										new JSONArray().put(startBuildingEntrance.getKey())
-												.put(startBuildingEntrance.getValue()))
-								.put("endTilePosition",
-										new JSONArray().put(endBuildingEntrance.getKey())
-												.put(endBuildingEntrance.getValue()))
-								.toString();
+								.put("startTilePosition", new JSONArray().put(startTileCol).put(startTileRow))
+								.put("endTilePosition", new JSONArray().put(endTileCol).put(endTileRow)).toString();
 
 						segments.put(new JSONObject(res));
-
 						continue;
 					}
 
-					// System.out.println(endBuilding + " | " + endBuildingEntrance);
+					// Update the grid tiles to reflect modified start and end tiles
+					grid.setTiles(grid.getTiles());
 
-					// disable iswall
-					tiles[startBuildingEntrance.getKey()][startBuildingEntrance.getValue()].setWall(false);
-					tiles[endBuildingEntrance.getKey()][endBuildingEntrance.getValue()].setEnd(true);
-
-					grid.setTiles(tiles);
-
+					// Run Dijkstra's on this grid
 					DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(grid);
-
-					// System.out.println("Start Tile isWall: "
-					// +
-					// tiles[startBuildingEntrance.getKey()][startBuildingEntrance.getValue()].isWall());
-					// System.out.println("End Tile isWall: "
-					// +
-					// tiles[endBuildingEntrance.getKey()][endBuildingEntrance.getValue()].isWall());
-
 					DijkstraAlgorithm.Result result = dijkstra.run();
 
+					// Update response with the result of Dijkstra's Algorthim
 					String res = new JSONObject()
 							.put("traversedTiles", result.getTraversedTiles())
 							.put("path", result.getPath())
 							.put("startTile", startBuilding)
 							.put("endTile", endBuilding)
-							.put("startTilePosition",
-									new JSONArray().put(startBuildingEntrance.getKey())
-											.put(startBuildingEntrance.getValue()))
-							.put("endTilePosition",
-									new JSONArray().put(endBuildingEntrance.getKey())
-											.put(endBuildingEntrance.getValue()))
-							.toString();
+							.put("startTilePosition", new JSONArray().put(startTileCol).put(startTileRow))
+							.put("endTilePosition", new JSONArray().put(endTileCol).put(endTileRow)).toString();
 
 					segments.put(new JSONObject(res));
 				}
 
+				// Reset the grid to its default state
+				grid.reset();
+
 				finalRes.put("segments", segments);
 				String response = finalRes.toString();
 
+				// Send the JSON rseponse
 				exchange.getResponseHeaders().set("Content-Type", "application/json");
 				byte[] responseBytes = response.getBytes();
 				exchange.sendResponseHeaders(200, responseBytes.length);
 				try (OutputStream os = exchange.getResponseBody()) {
 					os.write(responseBytes);
 				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 

@@ -1,8 +1,15 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class Grid {
     private static String gridStr = "";
+
+    private static Grid defaultGrid;
+
+    private static Tile[][] defaultTiles;
 
     private Tile[][] tiles;
 
@@ -49,7 +56,13 @@ public class Grid {
 
     // Reads the default grid from a JSON file
     public static void initialize() {
+        // Prevent re-initialization
+        if (Grid.gridStr.length() > 0) {
+            return;
+        }
+
         try {
+            // Stream the file into a string
             try (FileReader fr = new FileReader("../frontend/src/assets/grid.json");
                     BufferedReader br = new BufferedReader(fr)) {
 
@@ -57,6 +70,41 @@ public class Grid {
                 while ((line = br.readLine()) != null)
                     gridStr += line;
             }
+
+            // Parse the JSON string into JSON array
+            JSONArray gridArr = new JSONArray(gridStr);
+            int rows = gridArr.length();
+            int cols = gridArr.getJSONArray(0).length();
+            Tile[][] tiles = new Tile[rows][cols];
+
+            for (int i = 0; i < rows; i++) {
+                JSONArray row = gridArr.getJSONArray(i);
+                for (int j = 0; j < cols; j++) {
+                    // Construct tile at row i, col j
+                    JSONObject tileObj = row.getJSONObject(j);
+                    Tile tile = new Tile();
+                    tile.setRow(tileObj.getInt("row"));
+                    tile.setCol(tileObj.getInt("col"));
+                    tile.setDistance(Integer.MAX_VALUE);
+                    tile.setStart(false);
+                    tile.setEnd(false);
+                    // tile.setEnd(tileObj.getBoolean("isEnd"));
+                    tile.setWall(tileObj.getBoolean("isWall"));
+                    tile.setPath(tileObj.getBoolean("isPath"));
+                    tile.setTraversed(false);
+                    // tile.setTraversed(tileObj.getBoolean("isTraversed"));
+
+                    tiles[i][j] = tile;
+                }
+            }
+
+            // Cache defaults to avoid re-computation
+            defaultTiles = tiles;
+
+            Grid tmpGrid = new Grid();
+            tmpGrid.setTiles(tiles);
+
+            defaultGrid = tmpGrid;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,5 +112,17 @@ public class Grid {
 
     public static String getGridStr() {
         return gridStr;
+    }
+
+    public static Grid getDefault() {
+        return defaultGrid;
+    }
+
+    public static Tile[][] getDefaultTiles() {
+        return defaultTiles;
+    }
+
+    public void reset() {
+        this.setTiles(defaultTiles);
     }
 }
