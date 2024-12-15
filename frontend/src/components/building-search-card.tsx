@@ -5,7 +5,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { Building } from "@/utils/buildings";
-import { useStore } from "@/lib/store";
+import { useBuildingStore } from "@/lib/building-store";
 import type {
   DraggableProvided,
   DraggableStateSnapshot,
@@ -21,7 +21,7 @@ export default function BuildingSearchCard({
   snapshot,
   building,
 }: BuildingSearchCardProps) {
-  const { addToQueue } = useStore((store) => store);
+  const { addToQueue } = useBuildingStore((store) => store);
 
   return (
     <div

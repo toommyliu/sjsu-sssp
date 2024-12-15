@@ -1,13 +1,13 @@
 import BuildingSearchCard from "@/components/building-search-card";
 import { Input } from "@/components/ui/input";
-import { useStore } from "@/lib/store";
+import { useBuildingStore } from "@/lib/building-store";
 import { BUILDINGS } from "@/utils/buildings";
 import { BUILDING_SEARCH_ID } from "@/utils/constants";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import type { ChangeEvent } from "react";
 
 export default function BuildingSearch() {
-  const { searchQuery, setSearchQuery } = useStore((store) => store);
+  const { searchQuery, setSearchQuery } = useBuildingStore((store) => store);
 
   const filteredBuildings = BUILDINGS.filter(
     (building) =>

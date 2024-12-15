@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useStore } from "@/lib/store";
+import { useBuildingStore } from "@/lib/building-store";
 import { PRIORITY_QUEUE_ID } from "@/utils/constants";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { GripVertical, X } from "lucide-react";
@@ -9,7 +9,7 @@ import { GripVertical, X } from "lucide-react";
  * reorder and remove buildings in their desired path.
 */
 export default function BuildingQueue() {
-  const { queue, removeFromQueue } = useStore((store) => store);
+  const { queue, removeFromQueue } = useBuildingStore((store) => store);
 
   return (
     // Defines a droppable area for the building priority queue

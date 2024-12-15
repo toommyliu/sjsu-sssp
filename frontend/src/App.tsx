@@ -3,7 +3,7 @@ import BuildingSearch from "@/components/building-search";
 import Grid from "@/components/grid";
 import { Button } from "@/components/ui/button";
 import { usePathfinding } from "@/providers/pathfinding-provider";
-import { useStore } from "@/lib/store";
+import { useBuildingStore } from "@/lib/building-store";
 import { BUILDING_SEARCH_ID, PRIORITY_QUEUE_ID } from "@/utils/constants";
 import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
 import axios, { AxiosError } from "axios";
@@ -16,7 +16,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { resetGrid, initializeDefaultGridStyles } = usePathfinding();
-  const { queue, setQueue } = useStore((store) => store);
+  const { queue, setQueue } = useBuildingStore((store) => store);
   const { setPath } = usePathStore(store => store);
 
   function onDragEnd(result: DropResult) {

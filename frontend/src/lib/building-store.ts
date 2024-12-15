@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { Building, BuildingWithUniqueId } from "@/utils/buildings";
 
-export const useStore = create<StoreState>()((set) => ({
+export const useBuildingStore = create<BuildingStoreState>()((set) => ({
   queue: [],
   setQueue: (queue) => set({ queue }),
   addToQueue: (building: Building) =>
@@ -19,7 +19,7 @@ export const useStore = create<StoreState>()((set) => ({
   setSearchQuery: (query) => set(() => ({ searchQuery: query })),
 }));
 
-type StoreState = {
+type BuildingStoreState = {
   // Priority queue of building locations
   queue: BuildingWithUniqueId[];
   setQueue: (queue: BuildingWithUniqueId[]) => void;
