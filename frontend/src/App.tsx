@@ -4,11 +4,7 @@ import Grid from "@/components/grid";
 import { Button } from "@/components/ui/button";
 import { usePathfinding } from "@/providers/pathfinding-provider";
 import { useStore } from "@/store/store";
-import {
-  BUILDING_SEARCH_ID,
-  PATH_TILE_STYLE,
-  PRIORITY_QUEUE_ID,
-} from "@/utils/constants";
+import { BUILDING_SEARCH_ID, PRIORITY_QUEUE_ID } from "@/utils/constants";
 import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
@@ -20,7 +16,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { resetGrid, initializeDefaultGridStyles } = usePathfinding();
-  const { queue, setQueue, path, setPath } = useStore((store) => store);
+  const { queue, setQueue, setPath } = useStore((store) => store);
 
   function onDragEnd(result: DropResult) {
     if (!result.destination) return;
@@ -88,18 +84,18 @@ export default function App() {
           //   div.className = PATH_TILE_STYLE;
           // }
 
-          animatePath(
-            {
-              building: segment.startTile,
-              position: segment.startTilePosition,
-              index: i,
-            },
-            {
-              building: segment.endTile,
-              position: segment.endTilePosition,
-              index: i + 1,
-            },
-          );
+          // animatePath(
+          //   {
+          //     building: segment.startTile,
+          //     position: segment.startTilePosition,
+          //     index: i,
+          //   },
+          //   {
+          //     building: segment.endTile,
+          //     position: segment.endTilePosition,
+          //     index: i + 1,
+          //   },
+          // );
 
           await new Promise((resolve) => setTimeout(resolve, 5_00));
         }
@@ -161,7 +157,7 @@ export default function App() {
           <Button
             onClick={() => {
               setQueue([]);
-              setPath(null);
+              setPath([]);
               resetGrid();
             }}
             disabled={isLoading}
