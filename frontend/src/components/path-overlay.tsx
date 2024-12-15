@@ -6,11 +6,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
+import { MapPinIcon } from "lucide-react";
 
 export default function PathOverlay({ paths }) {
-  const [currentTileSize, setCurrentTileSize] = useState<number>(
-    TILE_SIZE.base,
-  );
+  if (!paths) {
+    return null;
+  }
+
+  const [currentTileSize, setCurrentTileSize] = useState(TILE_SIZE.base);
   const [activeSegment, setActiveSegment] = useState(null);
   const [hoveredSegment, setHoveredSegment] = useState(null);
 
@@ -76,18 +79,17 @@ export default function PathOverlay({ paths }) {
   };
 
   const getSegmentInfo = (segment) => {
-    const distance = segment.path.length * currentTileSize;
-    return `${segment.startTile} → ${segment.endTile} (${Math.round(distance)} units)`;
+    // const distance = segment.path.length * currentTileSize;
+    return `${segment.startTile} → ${segment.endTile}`;
   };
 
   return (
     <div className="absolute inset-0">
       <svg
-        className="h-full w-full"
+        className="z-10 h-full w-full"
         viewBox={getViewBox()}
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* Draw circles for start/end points */}
         {paths.map((segment, segmentIndex) => {
           if (!segment.path?.length) return null;
 
@@ -138,19 +140,17 @@ export default function PathOverlay({ paths }) {
                       {...styles}
                     />
                     {/* Start point */}
-                    <circle
-                      cx={startPoint.x}
-                      cy={startPoint.y}
-                      r={styles.strokeWidth * 1.5}
-                      fill={styles.stroke}
-                    />
+                    <g
+                      transform={`translate(${startPoint.x - 12}, ${startPoint.y - 24})`}
+                    >
+                      <MapPinIcon className="size-6 text-purple-700" />
+                    </g>
                     {/* End point */}
-                    <circle
-                      cx={endPoint.x}
-                      cy={endPoint.y}
-                      r={styles.strokeWidth * 1.5}
-                      fill={styles.stroke}
-                    />
+                    <g
+                      transform={`translate(${endPoint.x - 12}, ${endPoint.y - 24})`}
+                    >
+                      <MapPinIcon className="size-6 text-purple-700" />
+                    </g>
                   </g>
                 </TooltipTrigger>
                 <TooltipContent>{getSegmentInfo(segment)}</TooltipContent>

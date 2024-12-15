@@ -4,6 +4,7 @@ import {
   TILE_STYLE,
   MAX_COLS,
   MAX_ROWS,
+  BG_TILE_STYLE,
 } from "@/utils/constants";
 import { Tile } from "@/utils/types";
 import { cn } from "../lib/cn";
@@ -16,7 +17,7 @@ export function getTileStyle({ row, col, isPath, isWall }: Tile) {
   } else if (isPath) {
     tileStyle = PATH_TILE_STYLE;
   } else {
-    tileStyle = cn(TILE_STYLE, "bg-slate-200");
+    tileStyle = BG_TILE_STYLE;
   }
 
   // Only applies to the outer edge of the grid (first/last rows and columns)

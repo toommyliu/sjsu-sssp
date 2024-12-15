@@ -16,6 +16,7 @@ export const TILE_STYLE = cn(
 );
 export const WALL_TILE_STYLE = cn(TILE_STYLE, "bg-slate-800");
 export const PATH_TILE_STYLE = cn(TILE_STYLE, "bg-emerald-500");
+export const BG_TILE_STYLE = cn(TILE_STYLE, "bg-slate-300");
 
 export const BUILDING_SEARCH_ID = "buildings" as const;
 export const PRIORITY_QUEUE_ID = "priority-queue" as const;
