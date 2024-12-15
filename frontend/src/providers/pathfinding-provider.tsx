@@ -1,17 +1,14 @@
-import { ReactNode, createContext, useContext, useState } from "react";
-import { Grid } from "../utils/types";
-import DefaultGrid from "../assets/grid.json";
+import { cn } from "@/lib/utils";
 import {
-  END_TILE_STYLE,
   MAX_COLS,
   MAX_ROWS,
   PATH_TILE_STYLE,
-  START_TILE_STYLE,
   TILE_STYLE,
-  TRAVERSED_TILE_STYLE,
   WALL_TILE_STYLE,
 } from "@/utils/constants";
-import { cn } from "@/lib/utils";
+import { ReactNode, createContext, useContext, useState } from "react";
+import DefaultGrid from "../assets/grid.json";
+import type { Grid } from "../utils/types";
 
 const PathfindingProviderContext = createContext<PathfindingProviderProps>({
   grid: [],
