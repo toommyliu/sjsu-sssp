@@ -156,6 +156,27 @@ public class Server {
 
 					SimpleEntry<Integer, Integer> endBuildingEntrance = Entrances.getEntrances().get(endBuilding);
 
+					if (startBuilding.equals(endBuilding)) {
+						System.out.println("Start and end buildings are the same: " + startBuilding);
+
+						String res = new JSONObject()
+								.put("traversedTiles", new JSONArray())
+								.put("path", new JSONArray())
+								.put("startTile", startBuilding)
+								.put("endTile", endBuilding)
+								.put("startTilePosition",
+										new JSONArray().put(startBuildingEntrance.getKey())
+												.put(startBuildingEntrance.getValue()))
+								.put("endTilePosition",
+										new JSONArray().put(endBuildingEntrance.getKey())
+												.put(endBuildingEntrance.getValue()))
+								.toString();
+
+						segments.put(new JSONObject(res));
+
+						continue;
+					}
+
 					// System.out.println(endBuilding + " | " + endBuildingEntrance);
 
 					// disable iswall
