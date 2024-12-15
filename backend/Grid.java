@@ -73,8 +73,10 @@ public class Grid {
 
             // Parse the JSON string into JSON array
             JSONArray gridArr = new JSONArray(gridStr);
+
             int rows = gridArr.length();
             int cols = gridArr.getJSONArray(0).length();
+
             Tile[][] tiles = new Tile[rows][cols];
 
             for (int i = 0; i < rows; i++) {
@@ -122,7 +124,35 @@ public class Grid {
         return defaultTiles;
     }
 
+    private static Tile[][] deepCopyTiles(Tile[][] ogTiles) {
+        if (ogTiles == null)
+            return null;
+
+        Tile[][] copy = new Tile[ogTiles.length][ogTiles[0].length];
+        for (int i = 0; i < ogTiles.length; i++) {
+            for (int j = 0; j < ogTiles[0].length; j++) {
+                Tile originalTile = ogTiles[i][j];
+                Tile newTile = new Tile();
+
+                newTile.setRow(originalTile.getRow());
+                newTile.setCol(originalTile.getCol());
+                newTile.setWall(originalTile.isWall());
+                newTile.setDistance(originalTile.getDistance());
+                newTile.setStart(originalTile.isStart());
+                newTile.setEnd(originalTile.isEnd());
+                newTile.setPath(originalTile.isPath());
+                newTile.setTraversed(originalTile.isTraversed());
+
+                copy[i][j] = newTile;
+            }
+        }
+        return copy;
+    }
+
+    /**
+     * Reset the grid tiles to a default state
+     */
     public void reset() {
-        this.setTiles(defaultTiles);
+        this.tiles = Grid.deepCopyTiles(defaultTiles);
     }
 }

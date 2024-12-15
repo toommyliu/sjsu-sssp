@@ -91,6 +91,7 @@ public class Server {
 						continue;
 					}
 
+					// Reset the grid to its default state
 					grid.reset();
 
 					System.out.println("Processing pair: [" + startBuilding + ", " + endBuilding + "]");
