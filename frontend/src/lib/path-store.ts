@@ -6,12 +6,12 @@ export const usePathStore = create<PathStoreState>()((set) => ({
   setPath: (path) => set({ path }),
 }));
 
-type PathStoreState = {
+export type PathStoreState = {
   path: PathSegment[];
   setPath: (paths: PathSegment[]) => void;
 };
 
-type PathSegment = {
+export type PathSegment = {
   path: Tile[];
   traversedTiles: []; // unused
   startTile: string; // building id

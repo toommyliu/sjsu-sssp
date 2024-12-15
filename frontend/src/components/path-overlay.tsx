@@ -7,16 +7,18 @@ import {
 } from "@/components/ui/tooltip";
 import { MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
 import { MapPinIcon } from "lucide-react";
+import type { PathSegment } from "@/lib/path-store";
 
-export default function PathOverlay({ paths }) {
+export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
   if (!paths) {
     return null;
   }
 
   const [currentTileSize, setCurrentTileSize] = useState(TILE_SIZE.base);
-  const [activeSegment, setActiveSegment] = useState(null);
-  const [hoveredSegment, setHoveredSegment] = useState(null);
+  const [activeSegment, setActiveSegment] = useState<number | null>(null);
+  const [hoveredSegment, setHoveredSegment] = useState<number | null>(null);
 
+  // Update tile size based on viewport size
   useEffect(() => {
     const updateTileSize = () => {
       if (window.matchMedia("(min-width: 1024px)").matches) {
@@ -33,6 +35,7 @@ export default function PathOverlay({ paths }) {
     };
 
     updateTileSize();
+
     const mediaQueries = [
       window.matchMedia("(min-width: 1024px)"),
       window.matchMedia("(min-width: 768px)"),
@@ -40,11 +43,14 @@ export default function PathOverlay({ paths }) {
       window.matchMedia("(min-width: 480px)"),
     ];
 
-    const listener = () => updateTileSize();
-    mediaQueries.forEach((query) => query.addListener(listener));
+    const cb = () => updateTileSize();
+    for (const mediaQuery of mediaQueries)
+      mediaQuery.addEventListener("change", cb);
 
+    // Cleanup
     return () => {
-      mediaQueries.forEach((query) => query.removeListener(listener));
+      for (const mediaQuery of mediaQueries)
+        mediaQuery.removeEventListener("change", cb);
     };
   }, []);
 
@@ -54,12 +60,12 @@ export default function PathOverlay({ paths }) {
     return `0 0 ${width} ${height}`;
   };
 
-  const gridToSvgCoords = (row, col) => ({
+  const gridToSvgCoords = (row: number, col: number) => ({
     x: (col + 0.5) * currentTileSize,
     y: (row + 0.5) * currentTileSize,
   });
 
-  const getPathStyles = (segmentIndex) => {
+  const getPathStyles = (segmentIndex: number) => {
     const isActive = activeSegment === segmentIndex;
     const isHovered = hoveredSegment === segmentIndex;
     const isSecondary = activeSegment !== null && !isActive;
@@ -78,7 +84,7 @@ export default function PathOverlay({ paths }) {
     };
   };
 
-  const getSegmentInfo = (segment) => {
+  const getSegmentInfo = (segment: PathSegment) => {
     // const distance = segment.path.length * currentTileSize;
     return `${segment.startTile} → ${segment.endTile}`;
   };
