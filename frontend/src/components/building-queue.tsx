@@ -4,10 +4,15 @@ import { PRIORITY_QUEUE_ID } from "@/utils/constants";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { GripVertical, X } from "lucide-react";
 
+/**
+ * Building priority queue component to display the building queue, allowing users to
+ * reorder and remove buildings in their desired path.
+*/
 export default function BuildingQueue() {
   const { queue, removeFromQueue } = useStore((store) => store);
 
   return (
+    // Defines a droppable area for the building priority queue
     <Droppable droppableId={PRIORITY_QUEUE_ID}>
       {(provided) => (
         <div
@@ -16,6 +21,7 @@ export default function BuildingQueue() {
           className="h-[40vh] space-y-2 overflow-y-auto rounded-lg border-2 border-dashed border-gray-200 p-4"
         >
           {queue.map((item, index) => (
+            // Defines a draggable building card
             <Draggable
               key={item.uniqueId}
               draggableId={item.uniqueId}

@@ -8,7 +8,7 @@ import { BUILDING_SEARCH_ID } from "@/utils/constants";
 export default function BuildingSearch() {
   const { searchQuery, setSearchQuery } = useStore((store) => store);
 
-  const filteredLocations = BUILDINGS.filter(
+  const filteredBuildings = BUILDINGS.filter(
     (building) =>
       building.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       building.id.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -31,22 +31,22 @@ export default function BuildingSearch() {
             />
           </div>
           <div className="flex flex-wrap content-start gap-4 p-2">
-            {filteredLocations.length === 0 ? (
+            {filteredBuildings.length === 0 ? (
               <div className="w-full p-3 text-center text-gray-500">
                 No results found
               </div>
             ) : (
-              filteredLocations.map((location, index) => (
+              filteredBuildings.map((building, index) => (
                 <Draggable
-                  key={location.id}
-                  draggableId={location.id}
+                  key={building.id}
+                  draggableId={building.id}
                   index={index}
                 >
                   {(provided, snapshot) => (
                     <BuildingSearchCard
                       provided={provided}
                       snapshot={snapshot}
-                      location={location}
+                      building={building}
                     />
                   )}
                 </Draggable>
