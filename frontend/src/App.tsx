@@ -17,6 +17,7 @@ import {
   type LocationWithUniqueId,
 } from "./locations";
 import { animatePath } from "./utils/animatePath";
+import toast from "react-hot-toast";
 
 export default function App() {
   const [queue, setQueue] = useState<LocationWithUniqueId[]>([]);
@@ -67,7 +68,9 @@ export default function App() {
   const startSearch = async () => {
     // TODO: display alert
     if (queue.length < 2) {
-      alert("bad queue");
+      toast.error("2 or more buildings are required to start.", {
+        id: "error",
+      });
       return;
     }
 
