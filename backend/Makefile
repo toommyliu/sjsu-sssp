@@ -5,7 +5,7 @@ CP = -cp
 CLASSPATH = vendor/json.jar:.
 
 # Files
-SRC = Buildings.java Entrances.java Tile.java DijkstraAlgorithm.java Grid.java Server.java
+SRC = Entrances.java Tile.java DijkstraAlgorithm.java Grid.java Server.java
 MAIN = Server
 
 # Port for the server
