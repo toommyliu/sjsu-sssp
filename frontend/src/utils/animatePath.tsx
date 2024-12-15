@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const pinRegistry = new Map<string, PinInfo>();
+export const pinRegistry = new Map<string, PinInfo>();
 
 const MapPin = ({
   orders,
@@ -53,15 +53,6 @@ export const animatePath = (
   },
 ) => {
   for (const tile of path) {
-    // Don't style the start and end tiles
-    if (
-      (tile.row === startTile.position[0] &&
-        tile.col === startTile.position[1]) ||
-      (tile.row === endTile.position[0] && tile.col === endTile.position[1])
-    ) {
-      continue;
-    }
-
     document.getElementById(`${tile.row}-${tile.col}`)!.className =
       PATH_TILE_STYLE;
   }
