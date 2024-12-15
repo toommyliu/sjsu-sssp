@@ -4,11 +4,11 @@ import type { Building, BuildingWithUniqueId } from "@/utils/buildings";
 export const useStore = create<StoreState>()((set) => ({
   queue: [],
   setQueue: (queue) => set({ queue }),
-  addToQueue: (location: Building) =>
+  addToQueue: (building: Building) =>
     set((state) => ({
       queue: [
         ...state.queue,
-        { ...location, uniqueId: `${location.id}-${Date.now()}` },
+        { ...building, uniqueId: `${building.id}-${Date.now()}` },
       ],
     })),
   removeFromQueue: (index) =>
@@ -23,7 +23,7 @@ type StoreState = {
   // Priority queue of building locations
   queue: BuildingWithUniqueId[];
   setQueue: (queue: BuildingWithUniqueId[]) => void;
-  addToQueue: (location: Building) => void;
+  addToQueue: (building: Building) => void;
   removeFromQueue: (index: number) => void;
 
   // Search query for building search
