@@ -26,7 +26,7 @@ export default function App() {
   const [, setPath] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { resetGrid } = usePathfinding();
+  const { resetGrid, initializeDefaultGridStyles } = usePathfinding();
 
   function addToQueue(location: Location) {
     setQueue([
@@ -75,6 +75,8 @@ export default function App() {
       return;
     }
 
+    initializeDefaultGridStyles();
+
     setPath(null);
     setIsLoading(true);
 
@@ -89,24 +91,28 @@ export default function App() {
         const { data } = resp;
 
         setPath(data.segments);
-        for (const segment of data.segments) {
-          if (Array.isArray(segment.path) && segment.path.length > 0) {
-            console.log(
-              `animate path from ${segment.startTile} to ${segment.endTile}`,
-            );
-            animatePath(
-              segment.path,
-              {
-                building: segment.startTile,
-                position: segment.startTilePosition,
-              },
-              {
-                building: segment.endTile,
-                position: segment.endTilePosition,
-              },
-            );
-            await new Promise((resolve) => setTimeout(resolve, 5_00));
+
+        for (let i = 0; i < data.segments.length; i += 1) {
+          const segment = data.segments[i];
+
+          if (!Array.isArray(segment.path) && !segment.path.length) {
+            return;
           }
+
+          animatePath(
+            segment.path,
+            {
+              building: segment.startTile,
+              position: segment.startTilePosition,
+              index: i,
+            },
+            {
+              building: segment.endTile,
+              position: segment.endTilePosition,
+              index: i + 1,
+            },
+          );
+          await new Promise((resolve) => setTimeout(resolve, 5_00));
         }
       } else {
         console.log("resp", resp);

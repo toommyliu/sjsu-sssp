@@ -14,14 +14,18 @@ const PathfindingProviderContext = createContext<PathfindingProviderProps>({
   grid: [],
   setGrid: () => null,
   resetGrid: () => null,
+  initializeDefaultGrid: () => null,
+  initializeDefaultGridStyles: () => null,
 });
 
 export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
   const [grid, setGrid] = useState<Grid>(DefaultGrid as unknown as Grid);
 
-  const resetGrid = () => {
+  const initializeDefaultGrid = () => {
     setGrid(DefaultGrid as unknown as Grid);
+  };
 
+  const initializeDefaultGridStyles = () => {
     for (let row = 0; row < MAX_ROWS; row++) {
       for (let col = 0; col < MAX_COLS; col++) {
         const tile = grid[row][col];
@@ -50,12 +54,19 @@ export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const resetGrid = () => {
+    initializeDefaultGrid();
+    initializeDefaultGridStyles();
+  };
+
   return (
     <PathfindingProviderContext.Provider
       value={{
         grid,
         setGrid,
         resetGrid,
+        initializeDefaultGrid,
+        initializeDefaultGridStyles,
       }}
     >
       {children}
@@ -75,5 +86,7 @@ export const usePathfinding = () => {
 type PathfindingProviderProps = {
   grid: Grid;
   setGrid: (grid: Grid) => void;
-  resetGrid: () => void;
+  resetGrid: () => void; // Resets to default grid and styles
+  initializeDefaultGrid: () => void; // Resets to default grid
+  initializeDefaultGridStyles: () => void; // Resets to default grid styles
 };
