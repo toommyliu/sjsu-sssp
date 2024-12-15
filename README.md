@@ -4,8 +4,7 @@
 
 ## Project Layout
 
-* [frontend](/frontend/): React application for pathfinding visualization
-* [backend](/backend/): Java web server for algorithm computation
+* [frontend](/frontend/): React application for SSSP pathfinding visualization
+* [backend](/backend/): Java web server for SSSP pathfinding algorithm computation
 
 For setup and usage instructions, refer to the README files in the respective directories.
-
