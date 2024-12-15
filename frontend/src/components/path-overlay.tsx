@@ -8,9 +8,33 @@ import {
 import { MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
 import { MapPinIcon } from "lucide-react";
 import type { PathSegment } from "@/lib/path-store";
+import { cn } from "@/lib/cn";
+
+const MapPin = ({
+  index,
+  showIndex,
+}: {
+  index: number;
+  showIndex: boolean;
+}) => (
+  <g className="group">
+    <MapPinIcon fill="#fb7185" className="size-6 text-rose-400" />
+    <text
+      className={cn(
+        "text-xs font-bold text-black transition-opacity duration-200",
+        showIndex ? "opacity-100" : "opacity-0",
+      )}
+      x="12"
+      y="16"
+      textAnchor="middle"
+    >
+      {index + 1}
+    </text>
+  </g>
+);
 
 export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
-  if (!paths) {
+  if (!paths?.length) {
     return null;
   }
 
@@ -88,7 +112,6 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
     // const distance = segment.path.length * currentTileSize;
     return `${segment.startTile} → ${segment.endTile}`;
   };
-
   return (
     <div className="absolute inset-0">
       <svg
@@ -105,6 +128,8 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
           }, "");
 
           const styles = getPathStyles(segmentIndex);
+          const showIndex =
+            activeSegment === segmentIndex || hoveredSegment === segmentIndex;
 
           const startPoint = gridToSvgCoords(
             segment.path[0].row,
@@ -149,13 +174,13 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
                     <g
                       transform={`translate(${startPoint.x - 12}, ${startPoint.y - 24})`}
                     >
-                      <MapPinIcon className="size-6 text-purple-700" />
+                      <MapPin index={segmentIndex} showIndex={showIndex} />
                     </g>
                     {/* End point */}
                     <g
                       transform={`translate(${endPoint.x - 12}, ${endPoint.y - 24})`}
                     >
-                      <MapPinIcon className="size-6 text-purple-700" />
+                      <MapPin index={segmentIndex + 1} showIndex={showIndex} />
                     </g>
                   </g>
                 </TooltipTrigger>
