@@ -1,46 +1,9 @@
-import { MapPinIcon } from "lucide-react";
+import MapPin from "@/components/map-pin";
 import { createRoot, type Root } from "react-dom/client";
-import { PATH_TILE_STYLE } from "./constants";
-import type { Tile } from "./types";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 export const pinRegistry = new Map<string, PinInfo>();
 
-const MapPin = ({
-  orders,
-}: {
-  orders: { buildingName: string; index: number }[];
-}) => {
-  const indicies = [...new Set(orders.map((o) => o.index + 1))];
-
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger className="relative">
-          <MapPinIcon
-            color="#f1f5f9" // tailwind slate-700
-            className="-mt-[17px] ml-[2px] size-2 sm:ml-[0px] sm:mt-[-20px] sm:size-3 md:-ml-[0px] md:-mt-[20px] md:size-4 lg:-mt-[2px] lg:size-5"
-          />
-          <span className="relative -right-3 -top-[2.7rem] text-nowrap rounded-md bg-slate-900 p-1 text-sm font-bold text-white shadow-2xl">
-            {indicies.join(", ")}
-          </span>
-        </TooltipTrigger>
-        <TooltipContent>
-          {orders[0].buildingName} (
-          {indicies.map((idx) => `#${idx}`).join(", ")})
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-};
-
 export const animatePath = (
-  path: Tile[],
   startTile: {
     building: string;
     position: number[];
@@ -52,11 +15,6 @@ export const animatePath = (
     index: number;
   },
 ) => {
-  for (const tile of path) {
-    document.getElementById(`${tile.row}-${tile.col}`)!.className =
-      PATH_TILE_STYLE;
-  }
-
   const updateOrCreatePin = (
     tileId: string,
     building: string,

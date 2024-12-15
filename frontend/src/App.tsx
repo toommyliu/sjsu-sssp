@@ -19,6 +19,7 @@ import {
 import { animatePath } from "./utils/animatePath";
 import toast from "react-hot-toast";
 import axios, { AxiosError } from "axios";
+import { PATH_TILE_STYLE } from "@/utils/constants";
 
 export default function App() {
   const [queue, setQueue] = useState<LocationWithUniqueId[]>([]);
@@ -89,7 +90,6 @@ export default function App() {
         console.log("resp", resp);
 
         const { data } = resp;
-
         setPath(data.segments);
 
         for (let i = 0; i < data.segments.length; i += 1) {
@@ -99,8 +99,15 @@ export default function App() {
             return;
           }
 
+          // Style path nodes
+          for (const tile of segment.path) {
+            const div = document.getElementById(`${tile.row}-${tile.col}`);
+            if (!div) return;
+
+            div.className = PATH_TILE_STYLE;
+          }
+
           animatePath(
-            segment.path,
             {
               building: segment.startTile,
               position: segment.startTilePosition,
@@ -112,6 +119,7 @@ export default function App() {
               index: i + 1,
             },
           );
+
           await new Promise((resolve) => setTimeout(resolve, 5_00));
         }
       } else {
