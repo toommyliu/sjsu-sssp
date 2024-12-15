@@ -1,12 +1,6 @@
-import { cn } from "@/lib/utils";
-import {
-  MAX_COLS,
-  MAX_ROWS,
-  PATH_TILE_STYLE,
-  TILE_STYLE,
-  WALL_TILE_STYLE,
-} from "@/utils/constants";
-import { ReactNode, createContext, useContext, useState } from "react";
+import { MAX_COLS, MAX_ROWS } from "@/utils/constants";
+import { getTileStyle } from "@/utils/getTileStyle";
+import { type ReactNode, createContext, useContext, useState } from "react";
 import DefaultGrid from "../assets/grid.json";
 import type { Grid } from "../utils/types";
 
@@ -31,72 +25,10 @@ export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
         const tile = grid[row][col];
 
         const div = document.getElementById(`${tile.row}-${tile.col}`);
+        if (!div) return;
 
-        if (div) {
-          const { isPath, isWall } = tile;
-
-          let tileStyle;
-
-          if (isWall) {
-            tileStyle = WALL_TILE_STYLE;
-          } else if (isPath) {
-            tileStyle = PATH_TILE_STYLE;
-          } else {
-            tileStyle = cn(TILE_STYLE, "bg-slate-200");
-          }
-
-          // Only applies to the outer edge of the grid (first/last rows and columns)
-          const contrastStyle = cn(
-            "border-sky-300",
-            // Top-left corner
-            row === 0 &&
-              col === 0 &&
-              "border-t border-l shadow-2xl rounded-tl-lg",
-            // Top-right corner
-            row === 0 &&
-              col === MAX_COLS - 1 &&
-              "border-t border-r-none shadow-2xl rounded-tr-lg",
-            row === 0 && col === MAX_COLS - 1 && "border-t border-r shadow-2xl",
-            // Bottom-left corner
-            row === MAX_ROWS - 1 &&
-              col === 0 &&
-              "border-b border-l shadow-2xl rounded-bl-lg",
-            // Bottom-right corner
-            row === MAX_ROWS - 1 &&
-              col === MAX_COLS - 1 &&
-              "border-b border-r shadow-2xl rounded-br-lg",
-
-            // Top edge (excluding corners)
-            row === 0 &&
-              col !== 0 &&
-              col !== MAX_COLS - 1 &&
-              "border-t shadow-2xl",
-            // Left edge (excluding corners)
-            col === 0 &&
-              row !== 0 &&
-              row !== MAX_ROWS - 1 &&
-              "border-l shadow-2xl",
-            // Bottom edge (excluding corners)
-            row === MAX_ROWS - 1 &&
-              col !== 0 &&
-              col !== MAX_COLS - 1 &&
-              "border-b shadow-2xl",
-            // Right edge (excluding corners and avoiding bottom border overlap)
-            col === MAX_COLS - 1 &&
-              row !== 0 &&
-              row !== MAX_ROWS - 1 &&
-              "border-r shadow-2xl",
-            // Inner tiles (no border or shadow)
-            row !== 0 &&
-              row !== MAX_ROWS - 1 &&
-              col !== 0 &&
-              col !== MAX_COLS - 1 &&
-              TILE_STYLE,
-          );
-
-          div.className = cn(tileStyle, contrastStyle);
-          div.innerHTML = "";
-        }
+        div.className = getTileStyle(tile);
+        div.innerHTML = "";
       }
     }
   };
