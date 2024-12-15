@@ -3,6 +3,7 @@ import { usePathfinding } from "@/providers/pathfinding-provider";
 import { MAX_COLS, MAX_ROWS } from "../utils/constants";
 import Tile from "@/components/tile";
 
+// Grid component
 export default function Grid() {
   const { grid } = usePathfinding();
 

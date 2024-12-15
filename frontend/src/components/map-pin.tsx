@@ -1,11 +1,14 @@
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { MapPinIcon } from "lucide-react";
 
+/**
+ * A MapPin shows the build name and order(s) in which it should be visited in the path.
+ */
 export default function MapPin({
   orders,
 }: {

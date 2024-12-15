@@ -11,6 +11,9 @@ import type {
 } from "@hello-pangea/dnd";
 import { PlusCircle } from "lucide-react";
 
+/**
+ * Draggable card for an available building location.
+ */
 export default function BuildingSearchCard({
   provided,
   snapshot,
