@@ -10,7 +10,7 @@ export default function Grid() {
     <div
       className={cn(
         // Base classes
-        "mb-10 flex flex-col items-center justify-center border-sky-300",
+        "mb-10 flex flex-col items-center justify-center",
         // Control Grid height
         `lg:min-h-[${MAX_ROWS * 20}px] md:min-h-[${
           MAX_ROWS * 15
