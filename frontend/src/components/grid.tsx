@@ -2,7 +2,7 @@ import Tile from "@/components/tile";
 import { cn } from "@/lib/cn";
 import { usePathfinding } from "@/providers/pathfinding-provider";
 import { MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
-import { useStore } from "@/store/store";
+import { useStore } from "@/lib/store";
 import PathOverlay from "./path-overlay";
 
 // Grid component

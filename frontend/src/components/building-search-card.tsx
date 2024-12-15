@@ -5,7 +5,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { Building } from "@/utils/buildings";
-import { useStore } from "@/store/store";
+import { useStore } from "@/lib/store";
 import type {
   DraggableProvided,
   DraggableStateSnapshot,

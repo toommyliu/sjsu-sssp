@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useStore } from "@/store/store";
+import { useStore } from "@/lib/store";
 import { PRIORITY_QUEUE_ID } from "@/utils/constants";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { GripVertical, X } from "lucide-react";
