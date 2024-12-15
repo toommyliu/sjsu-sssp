@@ -9,9 +9,9 @@ export default function BuildingSearch() {
   const { searchQuery, setSearchQuery } = useStore((store) => store);
 
   const filteredLocations = BUILDINGS.filter(
-    (location) =>
-      location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      location.id.toLowerCase().includes(searchQuery.toLowerCase()),
+    (building) =>
+      building.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      building.id.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
