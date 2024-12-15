@@ -2,7 +2,6 @@
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,6 +13,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Server {
+	private static void doInitialization() {
+		Entrances.initialize();
+		Grid.initialize();
+	}
 
 	public static void main(String[] args) throws IOException {
 		int port;
@@ -23,7 +26,8 @@ public class Server {
 			port = 3000;
 		}
 
-		Entrances.initialize();
+		Server.doInitialization();
+		System.out.println("Initializing server.");
 
 		// Prepare the server
 		HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
@@ -62,20 +66,11 @@ public class Server {
 				}
 			}
 
-			String gridStr = "";
-			try (FileReader fr = new FileReader("../frontend/src/assets/grid.json");
-					BufferedReader br = new BufferedReader(fr)) {
-
-				String line;
-				while ((line = br.readLine()) != null)
-					gridStr += line;
-			}
-
 			// Parse the json string
 			try {
 				String jsonStr = requestBody.toString();
 				JSONObject json = new JSONObject(jsonStr);
-				json.put("grid", new JSONArray(gridStr));
+				json.put("grid", new JSONArray(Grid.getGridStr()));
 
 				// Prepare to run Dijsktra's algorithm
 
@@ -241,6 +236,6 @@ public class Server {
 		// Start the server
 		server.setExecutor(null);
 		server.start();
-		System.out.println("Server is running on port " + port);
+		System.out.println("Server is running on port " + port + ".");
 	}
 }
