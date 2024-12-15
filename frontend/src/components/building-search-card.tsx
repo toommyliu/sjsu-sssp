@@ -4,7 +4,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import type { Location } from "@/utils/locations";
+import type { Building } from "@/utils/buildings";
 import { useStore } from "@/store/store";
 import type {
   DraggableProvided,
@@ -56,5 +56,5 @@ export default function BuildingSearchCard({
 type BuildingSearchCardProps = {
   provided: DraggableProvided;
   snapshot: DraggableStateSnapshot;
-  location: Location;
+  location: Building;
 };

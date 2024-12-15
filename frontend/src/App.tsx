@@ -13,8 +13,8 @@ import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { LOCATIONS } from "./utils/locations";
-import { animatePath } from "./utils/animatePath";
+import { BUILDINGS } from "@/utils/buildings";
+import { animatePath } from "@/utils/animatePath";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,10 +32,10 @@ export default function App() {
       source.droppableId === BUILDING_SEARCH_ID &&
       destination.droppableId === PRIORITY_QUEUE_ID
     ) {
-      const location = LOCATIONS[source.index];
+      const building = BUILDINGS[source.index];
       const newQueue = [
         ...queue.slice(0, destination.index),
-        { ...location, uniqueId: `${location.id}-${Date.now()}` },
+        { ...building, uniqueId: `${building.id}-${Date.now()}` },
         ...queue.slice(destination.index),
       ];
       setQueue(newQueue);

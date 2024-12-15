@@ -1,4 +1,4 @@
-export const LOCATIONS = [
+export const BUILDINGS = [
   { id: "KING", name: "Dr. Martin Luther King, Jr. Library" },
   { id: "HGH", name: "Hugh Gillis Hall" },
   {
@@ -47,14 +47,14 @@ export const LOCATIONS = [
 ];
 
 export function getBuildingNameFromId(id: string): string {
-  const location = LOCATIONS.find((location) => location.id === id);
-  return location ? location.name : id;
+  const building = BUILDINGS.find((building) => building.id === id);
+  return building?.name ?? id;
 }
 
 export function getIdFromBuildingName(name: string): string {
-  const location = LOCATIONS.find((location) => location.name === name);
-  return location ? location.id : name;
+  const building = BUILDINGS.find((building) => building.name === name);
+  return building ? building.id : name;
 }
 
-export type Location = { id: string; name: string };
-export type LocationWithUniqueId = Location & { uniqueId: string };
+export type Building = { id: string; name: string };
+export type BuildingWithUniqueId = Building & { uniqueId: string };

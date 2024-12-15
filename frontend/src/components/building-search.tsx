@@ -1,6 +1,6 @@
 import BuildingSearchCard from "@/components/building-search-card";
 import { Input } from "@/components/ui/input";
-import { LOCATIONS } from "@/utils/locations";
+import { BUILDINGS } from "@/utils/buildings";
 import { useStore } from "@/store/store";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { BUILDING_SEARCH_ID } from "@/utils/constants";
@@ -8,7 +8,7 @@ import { BUILDING_SEARCH_ID } from "@/utils/constants";
 export default function BuildingSearch() {
   const { searchQuery, setSearchQuery } = useStore((store) => store);
 
-  const filteredLocations = LOCATIONS.filter(
+  const filteredLocations = BUILDINGS.filter(
     (location) =>
       location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       location.id.toLowerCase().includes(searchQuery.toLowerCase()),

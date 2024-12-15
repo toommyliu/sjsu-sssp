@@ -1,10 +1,10 @@
 import { create } from "zustand";
-import type { Location, LocationWithUniqueId } from "@/utils/locations";
+import type { Building, BuildingWithUniqueId } from "@/utils/buildings";
 
 export const useStore = create<StoreState>()((set) => ({
   queue: [],
   setQueue: (queue) => set({ queue }),
-  addToQueue: (location: Location) =>
+  addToQueue: (location: Building) =>
     set((state) => ({
       queue: [
         ...state.queue,
@@ -21,9 +21,9 @@ export const useStore = create<StoreState>()((set) => ({
 
 type StoreState = {
   // Priority queue of building locations
-  queue: LocationWithUniqueId[];
-  setQueue: (queue: LocationWithUniqueId[]) => void;
-  addToQueue: (location: Location) => void;
+  queue: BuildingWithUniqueId[];
+  setQueue: (queue: BuildingWithUniqueId[]) => void;
+  addToQueue: (location: Building) => void;
   removeFromQueue: (index: number) => void;
 
   // Search query for building search
