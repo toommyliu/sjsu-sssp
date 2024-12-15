@@ -31,20 +31,20 @@ java --version
 
 ### Installation & Setup
 
-1. **Clone the repository**  
+1. **Clone the repository**
 ```bash
 git clone https://github.com/toommyliu/cs146-finalproject/
 cd backend
 ```
 
-2. **Compile All Java Source Files**  
+2. **Compile All Java Source Files**
 ```bash
 javac -cp vendor/json.jar Entrances.java Tile.java DijkstraAlgorithm.java Grid.java Server.java
 # or simply
 make compile
 ```
 
-3. **Run the backend server**  
+3. **Run the backend server**
 ```bash
 java -cp vendor/json.jar:. Server 3000
 # or simply
@@ -55,4 +55,4 @@ make run
 > You can execute `make all` to compile and run the backend server.
 
 4. **Access the application**
-  A message saying that "Server is running on port 3000." indicates that the server has initialized and ready. 
+  A message saying that "Server is running on port 3000." indicates that the server has initialized and ready.
