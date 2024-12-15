@@ -83,16 +83,16 @@ public class Grid {
                     // Construct tile at row i, col j
                     JSONObject tileObj = row.getJSONObject(j);
                     Tile tile = new Tile();
+                    // Keys provided in object
                     tile.setRow(tileObj.getInt("row"));
                     tile.setCol(tileObj.getInt("col"));
+                    tile.setWall(tileObj.getBoolean("isWall"));
+                    // Generic defaults
                     tile.setDistance(Integer.MAX_VALUE);
                     tile.setStart(false);
                     tile.setEnd(false);
-                    // tile.setEnd(tileObj.getBoolean("isEnd"));
-                    tile.setWall(tileObj.getBoolean("isWall"));
-                    tile.setPath(tileObj.getBoolean("isPath"));
+                    tile.setPath(false);
                     tile.setTraversed(false);
-                    // tile.setTraversed(tileObj.getBoolean("isTraversed"));
 
                     tiles[i][j] = tile;
                 }
