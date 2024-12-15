@@ -14,7 +14,7 @@ const MapPin = ({ buildingName }: { buildingName: string }) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <MapPinIcon size={16} color="white" className="ml-[1.7px]" />;
+          <MapPinIcon size={16} color="white" className="ml-[1.7px]" />
         </TooltipTrigger>
         <TooltipContent>{buildingName ?? "Location"}</TooltipContent>
       </Tooltip>
