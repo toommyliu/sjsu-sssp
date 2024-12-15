@@ -4,7 +4,7 @@ The **[frontend](/frontend)** provides an interactive and user-friendly interfac
 
 ## Technologies Used
 
-- **[React.js](https://react.dev/):** The library for web and native user interfaces
+- **[React.js](https://react.dev/):** The library for web and native user interfaces.
 - **[Tailwind CSS](https://tailwindcss.com/):** A utility-first CSS framework.
 - **[shadcn-ui](https://ui.shadcn.com/):** Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable. Open Source.
 
