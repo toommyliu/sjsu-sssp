@@ -1,45 +1,19 @@
 import { cn } from "@/lib/utils";
 import {
-  END_TILE_STYLE,
   MAX_ROWS,
   PATH_TILE_STYLE,
-  START_TILE_STYLE,
   TILE_STYLE,
-  TRAVERSED_TILE_STYLE,
   WALL_TILE_STYLE,
 } from "@/utils/constants";
+import type { Tile as TileType } from "@/utils/types";
 
-export default function Tile({
-  row,
-  col,
-  isStart,
-  isEnd,
-  isTraversed,
-  isWall,
-  isPath,
-}: {
-  row: number;
-  col: number;
-  isStart: boolean;
-  isEnd: boolean;
-  isTraversed: boolean;
-  isWall: boolean;
-  isPath: boolean;
-}) {
-  let tileTyleStyle;
+export default function Tile({ row, col, isWall, isPath }: TileType) {
+  let tileTyleStyle = TILE_STYLE;
 
-  if (isStart) {
-    tileTyleStyle = START_TILE_STYLE;
-  } else if (isEnd) {
-    tileTyleStyle = END_TILE_STYLE;
-  } else if (isWall) {
+  if (isWall) {
     tileTyleStyle = WALL_TILE_STYLE;
   } else if (isPath) {
     tileTyleStyle = PATH_TILE_STYLE;
-  } else if (isTraversed) {
-    tileTyleStyle = TRAVERSED_TILE_STYLE;
-  } else {
-    tileTyleStyle = TILE_STYLE;
   }
 
   const borderStyle =

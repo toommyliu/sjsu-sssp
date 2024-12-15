@@ -24,17 +24,14 @@ export default function Grid() {
       {grid.map((row, rowIndex) => (
         <div className="flex" key={rowIndex}>
           {row.map((tile, tileIndex) => {
-            const { isEnd, isStart, isPath, isTraversed, isWall } = tile;
+            const { row, col, isPath, isWall } = tile;
 
             return (
               <Tile
-                row={tile.row}
-                col={tile.col}
-                key={tileIndex}
-                isStart={isStart}
-                isEnd={isEnd}
+                row={row}
+                col={col}
+                key={`${row}-${col}-${tileIndex}`}
                 isPath={isPath}
-                isTraversed={isTraversed}
                 isWall={isWall}
               />
             );

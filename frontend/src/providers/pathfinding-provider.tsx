@@ -20,9 +20,7 @@ const PathfindingProviderContext = createContext<PathfindingProviderProps>({
 });
 
 export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
-  const [grid, setGrid] = useState<Grid>(
-    DefaultGrid as unknown as Grid,
-  );
+  const [grid, setGrid] = useState<Grid>(DefaultGrid as unknown as Grid);
 
   const resetGrid = () => {
     setGrid(DefaultGrid as unknown as Grid);
@@ -36,16 +34,10 @@ export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
         const div = document.getElementById(`${tile.row}-${tile.col}`);
 
         if (div) {
-          if (tile.isStart) {
-            tileTyleStyle = START_TILE_STYLE;
-          } else if (tile.isEnd) {
-            tileTyleStyle = END_TILE_STYLE;
-          } else if (tile.isWall) {
+          if (tile.isWall) {
             tileTyleStyle = WALL_TILE_STYLE;
           } else if (tile.isPath) {
             tileTyleStyle = PATH_TILE_STYLE;
-          } else if (tile.isTraversed) {
-            tileTyleStyle = TRAVERSED_TILE_STYLE;
           } else {
             tileTyleStyle = TILE_STYLE;
           }
@@ -55,7 +47,7 @@ export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
           const edgeStyle = row === MAX_ROWS - 1 && col === 0 ? "border-l" : "";
 
           div.className = cn(tileTyleStyle, borderStyle, edgeStyle);
-          div.innerHTML = '';
+          div.innerHTML = "";
         }
       }
     }
