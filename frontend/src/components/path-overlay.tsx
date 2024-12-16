@@ -9,7 +9,7 @@ import { MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
 import { MapPinIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const MapPin = ({ index }: { index: number }) => (
+const MapPin = ({ index, building }: { index: number; building: string }) => (
   <TooltipProvider>
     <Tooltip>
       <TooltipTrigger asChild>
@@ -25,7 +25,7 @@ const MapPin = ({ index }: { index: number }) => (
           </text>
         </g>
       </TooltipTrigger>
-      <TooltipContent>Point #{index + 1}</TooltipContent>
+      <TooltipContent>{building}</TooltipContent>
     </Tooltip>
   </TooltipProvider>
 );
@@ -111,7 +111,7 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
   };
 
   return (
-    <div className="absolute inset-0">
+    <div className="fade-in absolute inset-0">
       <svg
         className="z-10 h-full w-full"
         viewBox={getViewBox()}
@@ -171,13 +171,19 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
                     <g
                       transform={`translate(${startPoint.x - 12}, ${startPoint.y - 24})`}
                     >
-                      <MapPin index={segmentIndex} />
+                      <MapPin
+                        index={segmentIndex}
+                        building={segment.startTile}
+                      />
                     </g>
                     {/* End point */}
                     <g
                       transform={`translate(${endPoint.x - 12}, ${endPoint.y - 24})`}
                     >
-                      <MapPin index={segmentIndex + 1} />
+                      <MapPin
+                        index={segmentIndex + 1}
+                        building={segment.endTile}
+                      />
                     </g>
                   </g>
                 </TooltipTrigger>
