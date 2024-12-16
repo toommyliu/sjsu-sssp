@@ -136,8 +136,7 @@ public class Server {
 					Tile endTile = grid.getTileAt(endTileRow, endTileCol);
 
 					// In the frontend, start/end tiles are visualized as walls, so they must be set
-					// as
-					// a generic tile for Dijkstra to run properly.
+					// as a generic tile for Dijkstra to run properly.
 					startTile.setIsWall(false);
 					startTile.setIsStart(true);
 					endTile.setIsEnd(true);
