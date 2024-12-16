@@ -10,6 +10,8 @@ import { MapPinIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 
+// Displays a pin on the map
+// When hovered, displays the building name and its' position in the path
 const MapPin = ({
   indices,
   building,
@@ -42,6 +44,7 @@ const MapPin = ({
   );
 };
 
+// Displays a path overlay onto the grid
 export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
   if (!paths?.length) {
     return null;
@@ -98,6 +101,7 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
     y: (row + 0.5) * currentTileSize,
   });
 
+  // Styles for the path
   const getPathStyles = (segmentIndex: number) => {
     const isActive = activeSegment === segmentIndex;
     const isHovered = hoveredSegment === segmentIndex;
@@ -117,11 +121,13 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
     };
   };
 
+  // Clarifies which tiles the path is connecting
   const getSegmentInfo = (segment: PathSegment) => {
     return `${segment.startTile} → ${segment.endTile}`;
   };
 
-  const buildingMap: Record<string, number[]> = {}; // Track buildings and their indices
+  // Track buildings and their indicies
+  const buildingMap: Record<string, number[]> = {};
 
   return (
     <div className="fade-in absolute inset-0">

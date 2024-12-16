@@ -6,6 +6,7 @@ import { BUILDING_SEARCH_ID } from "@/utils/constants";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import type { ChangeEvent } from "react";
 
+// Displays a container for displaying and searching buildings
 export default function BuildingSearch() {
   const { searchQuery, setSearchQuery } = useBuildingStore((store) => store);
 

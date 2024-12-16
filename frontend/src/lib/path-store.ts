@@ -2,6 +2,7 @@ import { Tile } from "@/utils/types";
 import { create } from "zustand";
 
 export const usePathStore = create<PathStoreState>()((set) => ({
+  // Path segments
   path: [],
   setPath: (path) => set({ path }),
 }));
