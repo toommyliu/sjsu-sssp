@@ -5,6 +5,7 @@ import type { Tile as TileType } from "@/utils/types";
 export default function Tile(tile: TileType) {
   const { row, col } = tile;
 
+  // Debug click handler to log clicked tile position
   const handleClick = () => console.log({ row, col });
 
   return (
