@@ -138,10 +138,10 @@ public class Server {
 					// In the frontend, start/end tiles are visualized as walls, so they must be set
 					// as
 					// a generic tile for Dijkstra to run properly.
-					startTile.setWall(false);
-					startTile.setStart(true);
-					endTile.setEnd(true);
-					endTile.setWall(false);
+					startTile.setIsWall(false);
+					startTile.setIsStart(true);
+					endTile.setIsEnd(true);
+					endTile.setIsWall(false);
 
 					System.out.println("Start: " + startBuilding + " | End: " + endBuilding);
 

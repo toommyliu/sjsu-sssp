@@ -55,7 +55,7 @@ public class DijkstraAlgorithm {
                 break;
             }
 
-            currentTile.setTraversed(true);
+            currentTile.setIsTraversed(true);
             traversedTiles.add(currentTile);
 
             // Check if we've reached the end tile
@@ -96,7 +96,7 @@ public class DijkstraAlgorithm {
         if (tmp.getDistance() != Integer.MAX_VALUE) {
             while (tmp != null) {
                 // Mark this tile as part of the path
-                tmp.setPath(true);
+                tmp.setIsPath(true);
                 path.add(0, tmp);
                 tmp = tmp.getParent();
             }

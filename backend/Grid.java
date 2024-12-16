@@ -123,14 +123,14 @@ public class Grid {
                     // Keys provided in object
                     tile.setRow(tileObj.getInt("row"));
                     tile.setCol(tileObj.getInt("col"));
-                    tile.setWall(tileObj.getBoolean("isWall"));
+                    tile.setIsWall(tileObj.getBoolean("isWall"));
 
                     // Generic defaults, not defined in the json file
                     tile.setDistance(Integer.MAX_VALUE);
-                    tile.setStart(false);
-                    tile.setEnd(false);
-                    tile.setPath(false);
-                    tile.setTraversed(false);
+                    tile.setIsStart(false);
+                    tile.setIsEnd(false);
+                    tile.setIsPath(false);
+                    tile.setIsTraversed(false);
 
                     tiles[i][j] = tile;
                 }
@@ -186,12 +186,12 @@ public class Grid {
 
                 newTile.setRow(originalTile.getRow());
                 newTile.setCol(originalTile.getCol());
-                newTile.setWall(originalTile.isWall());
+                newTile.setIsWall(originalTile.isWall());
                 newTile.setDistance(originalTile.getDistance());
-                newTile.setStart(originalTile.isStart());
-                newTile.setEnd(originalTile.isEnd());
-                newTile.setPath(originalTile.isPath());
-                newTile.setTraversed(originalTile.isTraversed());
+                newTile.setIsStart(originalTile.isStart());
+                newTile.setIsEnd(originalTile.isEnd());
+                newTile.setIsPath(originalTile.isPath());
+                newTile.setIsTraversed(originalTile.isTraversed());
 
                 copyGrid[i][j] = newTile;
             }
