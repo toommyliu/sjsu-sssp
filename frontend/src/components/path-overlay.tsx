@@ -94,19 +94,18 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
     return {
       strokeWidth: isActive || isHovered ? "4" : "3",
       stroke: isActive
-        ? "#2563eb"
+        ? "#2563eb" // the line is selected
         : isHovered
-          ? "#3b82f6"
+          ? "#3b82f6" // the line is hovered
           : isSecondary
-            ? "#94a3b8"
-            : "#22c55e",
+            ? "#94a3b8" // the line is not selected
+            : "#22c55e", // the line is not hovered, selected
       opacity: isSecondary ? 0.4 : 1,
       transition: "all 0.2s ease-in-out",
     };
   };
 
   const getSegmentInfo = (segment: PathSegment) => {
-    // const distance = segment.path.length * currentTileSize;
     return `${segment.startTile} → ${segment.endTile}`;
   };
 
@@ -118,7 +117,6 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
         preserveAspectRatio="xMidYMid meet"
       >
         {paths.map((segment, segmentIndex) => {
-          // TODO: buildings are the same?
           if (!segment?.path?.length) return null;
 
           const pathData = segment.path.reduce((acc, tile, i) => {
@@ -150,15 +148,18 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
                       )
                     }
                     className="cursor-pointer"
+                    style={{
+                      // I don't think this works...
+                      zIndex: hoveredSegment === segmentIndex ? 100 : -10,
+                    }}
                   >
-                    {/* Invisible wider path for better click handling */}
                     <path
                       d={pathData}
                       stroke="transparent"
                       strokeWidth="20"
                       fill="none"
                     />
-                    {/* Visible path */}
+                    {/* The path */}
                     <path
                       d={pathData}
                       fill="none"
@@ -167,7 +168,7 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
                       className="transition-all duration-300"
                       {...styles}
                     />
-                    {/* Start point */}
+                    {/* Starting point */}
                     <g
                       transform={`translate(${startPoint.x - 12}, ${startPoint.y - 24})`}
                     >
@@ -176,7 +177,7 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
                         building={segment.startTile}
                       />
                     </g>
-                    {/* End point */}
+                    {/* Ending point */}
                     <g
                       transform={`translate(${endPoint.x - 12}, ${endPoint.y - 24})`}
                     >
