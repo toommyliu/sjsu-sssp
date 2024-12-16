@@ -8,9 +8,6 @@ CLASSPATH = vendor/json.jar:.
 SRC = Entrances.java Tile.java DijkstraAlgorithm.java Grid.java Server.java
 MAIN = Server
 
-# Port for the server
-PORT = 3000
-
 # Default target
 all: compile run
 
@@ -20,7 +17,7 @@ compile:
 
 # Run target
 run:
-	$(JAVA) $(CP) $(CLASSPATH) $(MAIN) $(PORT)
+	$(JAVA) $(CP) $(CLASSPATH) $(MAIN)
 
 # Clean target
 clean:

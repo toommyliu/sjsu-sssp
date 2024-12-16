@@ -13,6 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Server {
+	private final static int PORT = 3000;
+
 	// Initialize required data to run Dijkstra's Algorithm
 	private static void doInitialization() {
 		Entrances.initialize();
@@ -20,18 +22,11 @@ public class Server {
 	}
 
 	public static void main(String[] args) throws IOException {
-		int port;
-		try {
-			port = Integer.parseInt(args[0]);
-		} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-			port = 3000;
-		}
-
 		Server.doInitialization();
 		System.out.println("Initializing server.");
 
 		// Prepare the server
-		HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+		HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
 
 		// /dijkstra route to run Dijkstra Algorithm
 		server.createContext("/dijkstra", (final HttpExchange exchange) -> {
