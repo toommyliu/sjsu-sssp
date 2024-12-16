@@ -1,9 +1,9 @@
 import Tile from "@/components/tile";
 import { cn } from "@/lib/cn";
-import { usePathfinding } from "@/providers/pathfinding-provider";
-import { MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
-import PathOverlay from "./path-overlay";
 import { usePathStore } from "@/lib/path-store";
+import { usePathfinding } from "@/providers/pathfinding-provider";
+import { GRID_STYLE, MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
+import PathOverlay from "./path-overlay";
 
 // Grid component
 export default function Grid() {
@@ -14,13 +14,12 @@ export default function Grid() {
     <div className="relative">
       <div
         className={cn(
-          // Base classes
-          "mb-10 flex flex-col items-center justify-center",
-          // Control Grid height
+          GRID_STYLE,
+          // Responsive height
           `lg:min-h-[${MAX_ROWS * TILE_SIZE.lg}px] md:min-h-[${
             MAX_ROWS * TILE_SIZE.md
           }px] sm:min-h-[${MAX_ROWS * TILE_SIZE.sm}px] xs:min-h-[${MAX_ROWS * TILE_SIZE.xs}] min-h-[${MAX_ROWS * TILE_SIZE.base}px]`,
-          // Controlling grid width
+          // Responsive width
           `lg:w-[${MAX_COLS * TILE_SIZE.lg}px] md:w-[${MAX_COLS * TILE_SIZE.md}px] sm:w-[${
             MAX_COLS * TILE_SIZE.sm
           }px] xs:min-w-h-[${MAX_ROWS * TILE_SIZE.sm}] w-[${MAX_COLS * TILE_SIZE.base}px]`,
