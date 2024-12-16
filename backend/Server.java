@@ -75,7 +75,7 @@ public class Server {
 				// Prepare to run Dijsktra's algorithm
 				JSONArray locationsArr = (JSONArray) json.get("locations");
 
-				Grid grid = Grid.getDefault();
+				Grid grid = Grid.getDefaultGrid();
 
 				JSONObject finalRes = new JSONObject();
 				finalRes.put("status", "success");

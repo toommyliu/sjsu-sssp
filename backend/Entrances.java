@@ -1,31 +1,50 @@
 import java.util.HashMap;
 import java.util.AbstractMap;
 
+/**
+ * Entrances class that stores the grid positions of the entrance to each
+ * building.
+ */
 public class Entrances {
     // Mapping of building ids to the entrance tile position on the grid
     private static HashMap<String, AbstractMap.SimpleEntry<Integer, Integer>> mapping = new HashMap<>();
-    private static boolean initialized = false;
 
+    /**
+     * Get the mapping of building ids to the entrance tile position on the grid.
+     *
+     * @return The mapping of building ids to the entrance tile position on the
+     *         grid.
+     */
     public static HashMap<String, AbstractMap.SimpleEntry<Integer, Integer>> getEntrances() {
         return mapping;
     }
 
-    public static boolean hasInitialized() {
-        return initialized;
-    }
-
-    public static void setInitialized(boolean initialized) {
-        Entrances.initialized = initialized;
-    }
-
+    /**
+     * Add an entrance to the mapping.
+     *
+     * @param building The building id.
+     * @param row      The row of the entrance.
+     * @param col      The column of the entrance.
+     */
     public static void addEntrance(String building, int row, int col) {
         mapping.put(building, new AbstractMap.SimpleEntry<>(row, col));
     }
 
+    /**
+     * Remove an entrance from the mapping.
+     *
+     * @param building The building id.
+     */
     public static void removeEntrance(String building) {
+        if (!mapping.containsKey(building))
+            return;
+
         mapping.remove(building);
     }
 
+    /**
+     * Initialize the entrances of the buildings.
+     */
     public static void initialize() {
         Entrances.addEntrance("KING", 13, 3);
         Entrances.addEntrance("HGH", 11, 8);
@@ -69,14 +88,5 @@ public class Entrances {
         Entrances.addEntrance("CVC", 38, 43);
         Entrances.addEntrance("CVB", 39, 45);
         Entrances.addEntrance("CVA", 41, 43);
-    }
-
-    public static String getBuildingFromEntrance(int row, int col) {
-        for (HashMap.Entry<String, AbstractMap.SimpleEntry<Integer, Integer>> entry : mapping.entrySet()) {
-            if (entry.getValue().getKey() == row && entry.getValue().getValue() == col) {
-                return entry.getKey();
-            }
-        }
-        return null;
     }
 }
