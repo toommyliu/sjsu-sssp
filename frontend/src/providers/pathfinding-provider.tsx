@@ -3,7 +3,6 @@ import { getTileStyle } from "@/utils/getTileStyle";
 import { type ReactNode, createContext, useContext, useState } from "react";
 import DefaultGrid from "../assets/grid.json";
 import type { Grid } from "../utils/types";
-import { pinRegistry } from "@/utils/animatePath";
 
 const PathfindingProviderContext = createContext<PathfindingProviderProps>({
   grid: [],
@@ -40,7 +39,6 @@ export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
   const resetGrid = () => {
     initializeDefaultGrid();
     initializeDefaultGridStyles();
-    pinRegistry.clear();
   };
 
   return (
