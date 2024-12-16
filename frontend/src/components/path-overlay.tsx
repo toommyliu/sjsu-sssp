@@ -8,6 +8,7 @@ import type { PathSegment } from "@/lib/path-store";
 import { MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
 import { MapPinIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { createRoot } from "react-dom/client";
 
 const MapPin = ({
   indices,
@@ -28,6 +29,7 @@ const MapPin = ({
               className="text-xs font-bold opacity-100 shadow-xl drop-shadow-xl transition-opacity duration-200"
               x="12"
               y="16"
+              fill="white"
               textAnchor="middle"
             >
               {uniqueIndicies.join(", ")}
@@ -129,7 +131,31 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
         preserveAspectRatio="xMidYMid meet"
       >
         {paths.map((segment, segmentIndex) => {
-          if (!segment?.path?.length) return null;
+          if (!segment?.path) return null;
+
+          if (segment.startTile === segment.endTile) {
+            const div = document.createElement("div");
+            const root = createRoot(div);
+
+            root.render(
+              <TooltipProvider key={segmentIndex}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <MapPin indices={[]} building={segment.endTile} />
+                    {/* </g> */}
+                  </TooltipTrigger>
+                  <TooltipContent>{getSegmentInfo(segment)}</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>,
+            );
+
+            document
+              .getElementById(
+                `${segment.endTilePosition[0]}-${segment.endTilePosition[1]}`,
+              )!
+              .appendChild(div);
+            return;
+          }
 
           const pathData = segment.path.reduce((acc, tile, i) => {
             const { x, y } = gridToSvgCoords(tile.row, tile.col);
