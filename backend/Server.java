@@ -161,9 +161,6 @@ public class Server {
 						continue;
 					}
 
-					// Update the grid tiles to reflect modified start and end tiles
-					grid.setTiles(grid.getTiles());
-
 					// Run Dijkstra's on this grid
 					DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(grid);
 					DijkstraAlgorithm.Result result = dijkstra.run();
