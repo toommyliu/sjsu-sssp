@@ -42,6 +42,7 @@ public class DijkstraAlgorithm {
         startingTile.setDistance(0);
         untraversedTiles.add(startingTile);
 
+        // Dijkstra's Algorithm
         while (!untraversedTiles.isEmpty()) {
             untraversedTiles.sort((a, b) -> Integer.compare(a.getDistance(), b.getDistance()));
             Tile currentTile = untraversedTiles.remove(0);
@@ -110,7 +111,7 @@ public class DijkstraAlgorithm {
      *
      * @param a The first tile.
      * @param b The second tile.
-     * @return True if the tiles are equal, false otherwise.
+     * @return Whether the two tiles are equal.
      */
     private boolean isEqual(Tile a, Tile b) {
         return a.getRow() == b.getRow() && a.getCol() == b.getCol();
@@ -155,7 +156,7 @@ public class DijkstraAlgorithm {
      * @param grid The grid to check the position in.
      * @param row  The row of the position.
      * @param col  The column of the position.
-     * @return True if the position is valid, false otherwise.
+     * @return Whether the position is valid.
      */
     private boolean isValidPosition(Grid grid, int row, int col) {
         return row >= 0 && row < grid.getTiles().length &&
@@ -164,7 +165,7 @@ public class DijkstraAlgorithm {
 
     /**
      * Class that represents the result of Dijkstra's Algorithm from a start to end
-     * tile. IT contains the list of traversed tiles and the path from the start to
+     * tile. It contains the list of traversed tiles and the path from the start to
      * end tile.
      */
     public static class Result {
