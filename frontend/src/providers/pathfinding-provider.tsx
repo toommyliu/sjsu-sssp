@@ -16,10 +16,12 @@ const PathfindingProviderContext = createContext<PathfindingProviderProps>({
 export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
   const [grid, setGrid] = useState<Grid>(DefaultGrid as unknown as Grid);
 
+  // Helper to reset the grid to the default grid
   const initializeDefaultGrid = () => {
     setGrid(DefaultGrid as unknown as Grid);
   };
 
+  // Helper to reset the grid styles to the default grid styles
   const initializeDefaultGridStyles = () => {
     for (let row = 0; row < MAX_ROWS; row++) {
       for (let col = 0; col < MAX_COLS; col++) {
@@ -34,6 +36,7 @@ export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Helper to reset the entire grid
   const resetGrid = () => {
     initializeDefaultGrid();
     initializeDefaultGridStyles();
@@ -59,7 +62,7 @@ export const PathfindingProvider = ({ children }: { children: ReactNode }) => {
 export const usePathfinding = () => {
   const context = useContext(PathfindingProviderContext);
   if (!context)
-    throw new Error("usePathfinding must be used within PathfindingProvider");
+    throw new Error("usePathfinding must be used within PathfindingProvider!");
 
   return context;
 };

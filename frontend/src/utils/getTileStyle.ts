@@ -9,7 +9,14 @@ import {
 import { Tile } from "@/utils/types";
 import { cn } from "../lib/cn";
 
-export function getTileStyle({ row, col, isPath, isWall }: Tile) {
+/**
+ * Get the style of the tile based on its attributes
+ * @param tile The tile
+ * @returns The style of the tile
+ */
+export function getTileStyle(tile: Tile): string {
+  const { isWall, isPath, row, col } = tile;
+
   let tileStyle;
 
   if (isWall) {

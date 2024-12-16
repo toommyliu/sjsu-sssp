@@ -46,15 +46,5 @@ export const BUILDINGS = [
   { id: "CVA", name: "Campus Village A" },
 ];
 
-export function getBuildingNameFromId(id: string): string {
-  const building = BUILDINGS.find((building) => building.id === id);
-  return building?.name ?? id;
-}
-
-export function getIdFromBuildingName(name: string): string {
-  const building = BUILDINGS.find((building) => building.name === name);
-  return building ? building.id : name;
-}
-
 export type Building = { id: string; name: string };
 export type BuildingWithUniqueId = Building & { uniqueId: string };
