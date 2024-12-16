@@ -17,8 +17,9 @@ export default function App() {
 
   const { resetGrid, initializeDefaultGridStyles } = usePathfinding();
   const { queue, setQueue } = useBuildingStore((store) => store);
-  const { setPath } = usePathStore(store => store);
+  const { setPath } = usePathStore((store) => store);
 
+  // Drag and drop event handler
   function onDragEnd(result: DropResult) {
     if (!result.destination) return;
 
@@ -46,6 +47,7 @@ export default function App() {
     }
   }
 
+  // POST to backend to start Dijkstra's Algorithm
   const startSearch = async () => {
     if (queue.length < 2) {
       toast.error("2 or more buildings are required to start.", {
@@ -54,6 +56,7 @@ export default function App() {
       return;
     }
 
+    // Reset grid styles
     initializeDefaultGridStyles();
 
     setPath([]);
@@ -69,37 +72,6 @@ export default function App() {
 
         const { data } = resp;
         setPath(data.segments);
-
-        for (let i = 0; i < data.segments.length; i += 1) {
-          const segment = data.segments[i];
-
-          if (!Array.isArray(segment.path) && !segment.path.length) {
-            return;
-          }
-
-          // Style path nodes
-          // for (const tile of segment.path) {
-          //   const div = document.getElementById(`${tile.row}-${tile.col}`);
-          //   if (!div) return;
-
-          //   div.className = PATH_TILE_STYLE;
-          // }
-
-          // animatePath(
-          //   {
-          //     building: segment.startTile,
-          //     position: segment.startTilePosition,
-          //     index: i,
-          //   },
-          //   {
-          //     building: segment.endTile,
-          //     position: segment.endTilePosition,
-          //     index: i + 1,
-          //   },
-          // );
-
-          await new Promise((resolve) => setTimeout(resolve, 5_00));
-        }
       } else {
         console.log("resp", resp);
         toast.error("An error occurred");

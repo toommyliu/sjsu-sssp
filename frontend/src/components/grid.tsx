@@ -10,6 +10,10 @@ export default function Grid() {
   const { grid } = usePathfinding();
   const { path } = usePathStore((store) => store);
 
+  if (!path?.length) {
+    return null;
+  }
+
   return (
     <div className="relative">
       <div
