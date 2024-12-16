@@ -9,26 +9,36 @@ import { MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
 import { MapPinIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const MapPin = ({ index, building }: { index: number; building: string }) => (
-  <TooltipProvider>
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <g className="group cursor-pointer">
-          <MapPinIcon fill="#7e22ce" className="size-6 text-purple-700" />
-          <text
-            className="text-xs font-bold opacity-100 shadow-xl drop-shadow-xl transition-opacity duration-200"
-            x="12"
-            y="16"
-            textAnchor="middle"
-          >
-            {index + 1}
-          </text>
-        </g>
-      </TooltipTrigger>
-      <TooltipContent>{building}</TooltipContent>
-    </Tooltip>
-  </TooltipProvider>
-);
+const MapPin = ({
+  indices,
+  building,
+}: {
+  indices: number[];
+  building: string;
+}) => {
+  const uniqueIndicies = [...new Set(indices)];
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <g className="group cursor-pointer">
+            <MapPinIcon fill="#7e22ce" className="size-6 text-purple-700" />
+            <text
+              className="text-xs font-bold opacity-100 shadow-xl drop-shadow-xl transition-opacity duration-200"
+              x="12"
+              y="16"
+              textAnchor="middle"
+            >
+              {uniqueIndicies.join(", ")}
+            </text>
+          </g>
+        </TooltipTrigger>
+        <TooltipContent>{building}</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
 
 export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
   if (!paths?.length) {
@@ -109,6 +119,8 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
     return `${segment.startTile} → ${segment.endTile}`;
   };
 
+  const buildingMap: Record<string, number[]> = {}; // Track buildings and their indices
+
   return (
     <div className="fade-in absolute inset-0">
       <svg
@@ -134,6 +146,17 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
             segment.path[segment.path.length - 1].row,
             segment.path[segment.path.length - 1].col,
           );
+
+          // Update buildingMap with start and end tiles
+          if (!buildingMap[segment.startTile]) {
+            buildingMap[segment.startTile] = [];
+          }
+          buildingMap[segment.startTile].push(segmentIndex + 1);
+
+          if (!buildingMap[segment.endTile]) {
+            buildingMap[segment.endTile] = [];
+          }
+          buildingMap[segment.endTile].push(segmentIndex + 2);
 
           return (
             <TooltipProvider key={segmentIndex}>
@@ -173,7 +196,7 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
                       transform={`translate(${startPoint.x - 12}, ${startPoint.y - 24})`}
                     >
                       <MapPin
-                        index={segmentIndex}
+                        indices={buildingMap[segment.startTile]}
                         building={segment.startTile}
                       />
                     </g>
@@ -182,7 +205,7 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
                       transform={`translate(${endPoint.x - 12}, ${endPoint.y - 24})`}
                     >
                       <MapPin
-                        index={segmentIndex + 1}
+                        indices={buildingMap[segment.endTile]}
                         building={segment.endTile}
                       />
                     </g>
