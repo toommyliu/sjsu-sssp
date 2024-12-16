@@ -142,7 +142,6 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <MapPin indices={[]} building={segment.endTile} />
-                    {/* </g> */}
                   </TooltipTrigger>
                   <TooltipContent>{getSegmentInfo(segment)}</TooltipContent>
                 </Tooltip>
