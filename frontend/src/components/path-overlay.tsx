@@ -112,6 +112,7 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
     // const distance = segment.path.length * currentTileSize;
     return `${segment.startTile} → ${segment.endTile}`;
   };
+
   return (
     <div className="absolute inset-0">
       <svg
@@ -120,7 +121,8 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
         preserveAspectRatio="xMidYMid meet"
       >
         {paths.map((segment, segmentIndex) => {
-          if (!segment.path?.length) return null;
+          // TODO: buildings are the same?
+          if (!segment?.path?.length) return null;
 
           const pathData = segment.path.reduce((acc, tile, i) => {
             const { x, y } = gridToSvgCoords(tile.row, tile.col);
