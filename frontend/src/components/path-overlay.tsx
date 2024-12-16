@@ -127,8 +127,6 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
           }, "");
 
           const styles = getPathStyles(segmentIndex);
-          const showIndex =
-            activeSegment === segmentIndex || hoveredSegment === segmentIndex;
 
           const startPoint = gridToSvgCoords(
             segment.path[0].row,
