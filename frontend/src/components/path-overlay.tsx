@@ -1,36 +1,33 @@
-import { useEffect, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { PathSegment } from "@/lib/path-store";
 import { MAX_COLS, MAX_ROWS, TILE_SIZE } from "@/utils/constants";
 import { MapPinIcon } from "lucide-react";
-import type { PathSegment } from "@/lib/path-store";
-import { cn } from "@/lib/cn";
+import { useEffect, useState } from "react";
 
-const MapPin = ({
-  index,
-  showIndex,
-}: {
-  index: number;
-  showIndex: boolean;
-}) => (
-  <g className="group">
-    <MapPinIcon fill="#fb7185" className="size-6 text-rose-400" />
-    <text
-      className={cn(
-        "text-xs font-bold text-black transition-opacity duration-200",
-        showIndex ? "opacity-100" : "opacity-0",
-      )}
-      x="12"
-      y="16"
-      textAnchor="middle"
-    >
-      {index + 1}
-    </text>
-  </g>
+const MapPin = ({ index }: { index: number }) => (
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <g className="group cursor-pointer">
+          <MapPinIcon fill="#7e22ce" className="size-6 text-purple-700" />
+          <text
+            className="text-xs font-bold opacity-100 shadow-xl drop-shadow-xl transition-opacity duration-200"
+            x="12"
+            y="16"
+            textAnchor="middle"
+          >
+            {index + 1}
+          </text>
+        </g>
+      </TooltipTrigger>
+      <TooltipContent>Point #{index + 1}</TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
 );
 
 export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
@@ -176,13 +173,13 @@ export default function PathOverlay({ paths }: { paths: PathSegment[] }) {
                     <g
                       transform={`translate(${startPoint.x - 12}, ${startPoint.y - 24})`}
                     >
-                      <MapPin index={segmentIndex} showIndex={showIndex} />
+                      <MapPin index={segmentIndex} />
                     </g>
                     {/* End point */}
                     <g
                       transform={`translate(${endPoint.x - 12}, ${endPoint.y - 24})`}
                     >
-                      <MapPin index={segmentIndex + 1} showIndex={showIndex} />
+                      <MapPin index={segmentIndex + 1} />
                     </g>
                   </g>
                 </TooltipTrigger>
