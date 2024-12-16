@@ -21,6 +21,26 @@ public class Server {
 		Grid.initialize();
 	}
 
+	/**
+	 * Write a JSON response to the client.
+	 *
+	 * @param exchange The HTTP exchange object.
+	 * @param response The JSON response to send.
+	 * @throws IOException If an I/O error occurs.
+	 */
+	private static void writeJson(HttpExchange exchange, String response, int statusCode) throws IOException {
+		if (statusCode == 0) {
+			statusCode = 200;
+		}
+
+		exchange.getResponseHeaders().set("Content-Type", "application/json");
+		byte[] responseBytes = response.getBytes();
+		exchange.sendResponseHeaders(statusCode, responseBytes.length);
+		try (OutputStream os = exchange.getResponseBody()) {
+			os.write(responseBytes);
+		}
+	}
+
 	public static void main(String[] args) throws IOException {
 		Server.doInitialization();
 		System.out.println("Initializing server.");
@@ -28,7 +48,7 @@ public class Server {
 		// Prepare the server
 		HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
 
-		// /dijkstra route to run Dijkstra Algorithm
+		// POST /dijkstra route to run Dijkstra Algorithm
 		server.createContext("/dijkstra", (final HttpExchange exchange) -> {
 			// Set CORS headers for all responses
 			exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
@@ -43,6 +63,7 @@ public class Server {
 
 			// Ensure correct HTTP request method
 			if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+
 				String msg = "Method Not Allowed";
 				exchange.sendResponseHeaders(405, msg.length());
 				try (OutputStream os = exchange.getResponseBody()) {
@@ -56,19 +77,30 @@ public class Server {
 			try (InputStream is = exchange.getRequestBody();
 					InputStreamReader isr = new InputStreamReader(is, "UTF-8");
 					BufferedReader br = new BufferedReader(isr)) {
+
 				String line;
 				while ((line = br.readLine()) != null) {
 					requestBody.append(line);
 				}
 			}
 
-			// Parse the json string
 			try {
+				// Parse the request body string
 				String jsonStr = requestBody.toString();
 				JSONObject json = new JSONObject(jsonStr);
 
 				// Prepare to run Dijsktra's algorithm
 				JSONArray locationsArr = (JSONArray) json.get("locations");
+
+				if (!json.has("locations") || locationsArr.length() < 2) {
+					String response = new JSONObject()
+							.put("status", "error")
+							.put("message", "Invalid JSON")
+							.toString();
+
+					Server.writeJson(exchange, response, 400);
+					return;
+				}
 
 				Grid grid = Grid.getDefaultGrid();
 
@@ -156,12 +188,7 @@ public class Server {
 
 				// Send the JSON rseponse
 				exchange.getResponseHeaders().set("Content-Type", "application/json");
-				byte[] responseBytes = response.getBytes();
-				exchange.sendResponseHeaders(200, responseBytes.length);
-				try (OutputStream os = exchange.getResponseBody()) {
-					os.write(responseBytes);
-				}
-
+				Server.writeJson(exchange, response, 200);
 			} catch (Exception e) {
 				e.printStackTrace();
 
@@ -170,18 +197,13 @@ public class Server {
 						.put("message", "Invalid JSON")
 						.toString();
 
-				exchange.getResponseHeaders().set("Content-Type", "application/json");
-				byte[] responseBytes = response.getBytes();
-				exchange.sendResponseHeaders(400, responseBytes.length);
-				try (OutputStream os = exchange.getResponseBody()) {
-					os.write(responseBytes);
-				}
+				Server.writeJson(exchange, response, 400);
 			}
 		});
 
 		// Start the server
 		server.setExecutor(null);
 		server.start();
-		System.out.println("Server is running on port " + port + ".");
+		System.out.println("Server is running on port " + PORT + ".");
 	}
 }
