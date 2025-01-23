@@ -33,27 +33,31 @@ npm -v
 # Verify Git installation
 git -v
 ```
+
 ---
 
 ### Installation & Setup
 
 1. **Clone the repository**
+
 ```bash
-git clone https://github.com/toommyliu/cs146-finalproject/
+git clone https://github.com/toommyliu/sjsu-sssp/
 cd frontend
 ```
 
 2. **Install dependencies**
+
 ```bash
 npm install
 ```
 
 3. **Run the development server**
+
 ```bash
 npm run dev
 ```
 
 4. **Access the application**
-Visit [http://localhost:5173](http://localhost:5173) on your local machine.
+   Visit [http://localhost:5173](http://localhost:5173) on your local machine.
 
 [frontend](/frontend/) requires interaction with [backend](../backend/), make sure it is running before using any functionality.
